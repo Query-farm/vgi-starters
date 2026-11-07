@@ -14,7 +14,7 @@
  */
 
 import { Database, type SQLQueryBindings } from "bun:sqlite";
-import { existsSync, renameSync } from "node:fs";
+import { existsSync, renameSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import {
@@ -47,8 +47,16 @@ function ensureDb(): void {
   db.transaction(() => {
     for (let i = 1; i <= 2000; i++) insert.run(i, regions[i % 4] ?? "north", (i * 37) % 1000);
   })();
-  db.close();
-  renameSync(tmp, DB_PATH);
+  // Finalize before closing: Windows can't rename a file that is still open.
+  insert.finalize();
+  db.close(true);
+  try {
+    renameSync(tmp, DB_PATH);
+  } catch (err) {
+    // Another worker process created the database first; use theirs.
+    rmSync(tmp, { force: true });
+    if (!existsSync(DB_PATH)) throw err;
+  }
 }
 
 type Expr = PushdownFilters["filters"][number];
