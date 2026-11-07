@@ -43,7 +43,7 @@ jobs:
           git add -A && git commit -qm template
           make init NAME=acme_demo
           git add -A && git commit -qm init
-          if git grep -n -I -i -w starter -- . ':!scripts/vgi_template.py' ':!.vgi-starter.json' | grep -vi 'starter template'; then
+          if git grep -n -I -i -w starter -- . ':!scripts/vgi_template.py' ':!.vgi-starter.json' | grep -vi 'starter template' | grep -v 'vgi-starter-api.query-farm.services'; then
             echo "::error::identifiers above were not renamed"; exit 1
           fi
           make check
