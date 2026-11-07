@@ -1,0 +1,10 @@
+build/
+.gradle/
+.tools/
+.kotlin/
+*.class
+.idea/
+*.iml
+out/
+.DS_Store
+duckdb_unittest_tempdir/

@@ -1,0 +1,9 @@
+.tools/
+bin/
+obj/
+dist/
+*.user
+.vs/
+.idea/
+TestResults/
+.DS_Store

@@ -1,0 +1,19 @@
+<Project>
+  <!-- Shared by every project in the repo. The release tag must match <Version>
+       (ci/check-version.sh). -->
+  <PropertyGroup>
+    <Version>0.1.0</Version>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- Lock files make restores reproducible; `make lock` refreshes them. -->
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <Authors>Query.Farm</Authors>
+    <Copyright>Copyright 2026 Query.Farm LLC</Copyright>
+  </PropertyGroup>
+</Project>

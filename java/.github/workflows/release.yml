@@ -1,0 +1,32 @@
+name: Release
+
+# Push a tag like v0.1.0. This gates on CI, then the shared vgi-actions workflow
+# builds the shaded jar, signs it with cosign (keyless), attaches SLSA build
+# provenance, and uploads <repo>-<tag>.jar + .sha256 + .cosign.bundle to the
+# GitHub release. Users run it with `java -jar` on JDK 25+.
+
+on:
+  push:
+    tags: ['v*.*.*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml
+
+  release:
+    needs: [ci]
+    permissions:
+      contents: write        # create the release, attach assets
+      id-token: write        # keyless signing + provenance
+      attestations: write
+    uses: Query-farm/vgi-actions/.github/workflows/java-release.yml@v1
+    with:
+      java_version: "25"
+      build_cmd: ./gradlew --console=plain shadowJar
+      jar: build/libs/*-all.jar
+      cache: gradle
+      version_check_cmd: ci/check-version.sh

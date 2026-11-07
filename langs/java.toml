@@ -1,0 +1,23 @@
+# Variables substituted into shared/*.tmpl for the Java starter.
+lang = "java"
+lang_title = "Java"
+sdk_name = "vgi-java"
+sdk_repo = "https://github.com/Query-farm/vgi-java"
+rpc_docs = "https://vgi-rpc-java.query.farm"
+prereqs = "JDK 25 or newer (`java` on the PATH or `JAVA_HOME` set; Gradle comes with the wrapper)"
+location_example = "launch:/abs/path/to/vgi-starter-java/bin/vgi-starter-worker"
+metadata_file = "`src/main/java/farm/query/starter/Meta.java` and each function's `metadata()`"
+version_file = "`build.gradle.kts`"
+release_summary = "The release workflow builds the shaded jar (`./gradlew shadowJar`) and attaches it to the GitHub release as `vgi-starter-java-<tag>.jar` with a SHA-256 checksum, so users can download it and run `java -jar vgi-starter-java-v0.1.0.jar`."
+logging = "Log through SLF4J (`org.slf4j.LoggerFactory.getLogger(...)`); the bundled `slf4j-simple` backend writes to stderr. `--debug` turns on debug logging."
+state_note = "Table-function state is a `TableProducerState` subclass with a public no-arg constructor. Over HTTP each batch can be served by a different request, so its non-transient fields travel with the request in a token the SDK encrypts (ChaCha20-Poly1305) with the worker's key. Keep them small; mark caches `transient`. The SDK gives per-batch code no access to the call's secrets, so `fetch_items` carries its token in a state field: acceptable only because of that encryption."
+recipes_run = """
+```sql
+ATTACH 'aggregate' (TYPE vgi, LOCATION '/abs/path/bin/recipes aggregate');
+```
+
+`make build` also builds `build/recipes/recipes.jar`; `bin/recipes <recipe>` serves one recipe from it.
+The recipe sources are in `examples/src/farm/query/starter/recipes/`, one class per recipe plus
+the `Recipes` dispatcher. They use only the SDK, Arrow and the JDK (plus the sqlite-jdbc driver for
+`pushdown_sqlite`)."""
+lint_location = "bin/vgi-starter-worker"

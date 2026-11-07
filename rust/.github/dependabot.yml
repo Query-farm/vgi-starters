@@ -1,0 +1,19 @@
+# Keeps GitHub Actions and Cargo dependencies current. vgi minor/major bumps are
+# ignored: they can change the wire protocol, which must match the DuckDB
+# extension exactly. Take those through template updates (make template-diff).
+# Arrow moves in lockstep with vgi, so it is held to vgi's version the same way.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule: { interval: weekly }
+    groups: { actions: { patterns: ["*"] } }
+  - package-ecosystem: cargo
+    directory: /
+    schedule: { interval: weekly }
+    groups: { cargo: { patterns: ["*"] } }
+    ignore:
+      - dependency-name: vgi
+        update-types: ["version-update:semver-minor", "version-update:semver-major"]
+      - dependency-name: "arrow*"
+        update-types: ["version-update:semver-major"]

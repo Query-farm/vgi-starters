@@ -1,0 +1,17 @@
+<Project>
+  <!-- Central package versions. QueryFarm.Vgi floats within one minor release: a minor
+       bump can change the wire protocol, which must match the DuckDB extension, so take
+       those through template updates (make template-diff). packages.lock.json pins the
+       exact versions; `make lock` re-resolves them. -->
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageFloatingVersionsEnabled>true</CentralPackageFloatingVersionsEnabled>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="QueryFarm.Vgi" Version="0.24.*" />
+    <PackageVersion Include="Microsoft.Data.Sqlite" Version="10.0.14" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.9.0" />
+    <PackageVersion Include="xunit.v3" Version="3.2.2" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,6 @@
+build/
+.gradle/
+.tools/
+.git/
+.idea/
+duckdb_unittest_tempdir/

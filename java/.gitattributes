@@ -1,0 +1,8 @@
+* text=auto
+*.cmd text eol=crlf
+*.bat text eol=crlf
+gradlew text eol=lf
+*.sh text eol=lf
+bin/vgi-starter-worker text eol=lf
+bin/recipes text eol=lf
+*.jar binary

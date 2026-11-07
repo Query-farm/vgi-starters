@@ -1,0 +1,21 @@
+# Variables substituted into shared/*.tmpl for the C# starter.
+lang = "csharp"
+lang_title = "C#"
+sdk_name = "QueryFarm.Vgi"
+sdk_repo = "https://github.com/Query-farm/vgi-csharp"
+rpc_docs = "https://github.com/Query-farm/vgi-rpc-csharp"
+prereqs = "The .NET 10 SDK"
+location_example = "/abs/path/to/vgi-starter-csharp/src/Starter.Worker/bin/Release/net10.0/vgi-starter-worker"
+metadata_file = "`src/Starter.Worker/Meta.cs` and each function's `Tags` and `Examples`"
+version_file = "`Directory.Build.props` (`<Version>`)"
+release_summary = "The release workflow publishes self-contained single-file executables for linux-x64, linux-arm64, osx-arm64 and win-x64 (no .NET install needed to run them) and attaches them to the GitHub release as `vgi-starter-worker-<tag>-<platform>.tar.gz` (`.zip` on Windows). Users download one, unpack it and point `LOCATION` at the executable."
+logging = "Write diagnostics with `Console.Error.WriteLine` (or an `ILogger` writing to stderr); `--debug` or `--log-level Debug` turns up the HTTP host's logging, which `Program.cs` routes to stderr."
+state_note = "A table function's cursor lives on its `ITableFunctionProducer`, which the SDK keeps in the worker process for the whole call (over HTTP too), so plain fields work. Keep it small anyway, and never send secrets back to DuckDB in batch metadata."
+recipes_run = """
+```sql
+ATTACH 'aggregate' (TYPE vgi, LOCATION '/abs/path/examples/Starter.Recipes/bin/Release/net10.0/vgi-recipes aggregate');
+```
+
+`vgi-recipes <recipe>` serves one recipe; `make build` builds it. Recipes use only
+`QueryFarm.Vgi`, Apache Arrow and, for `pushdown_sqlite`, `Microsoft.Data.Sqlite`."""
+lint_location = "src/Starter.Worker/bin/Release/net10.0/vgi-starter-worker"

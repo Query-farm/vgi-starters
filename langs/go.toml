@@ -1,0 +1,22 @@
+# Variables substituted into shared/*.tmpl for the Go starter.
+lang = "go"
+lang_title = "Go"
+sdk_name = "vgi-go"
+sdk_repo = "https://github.com/Query-farm/vgi-go"
+rpc_docs = "https://vgi-rpc-go.query.farm"
+prereqs = "Go 1.26+"
+location_example = "/abs/path/to/vgi-starter-go/bin/vgi-starter-worker"
+metadata_file = "`internal/starter/meta.go` and each function's `Metadata()`"
+version_file = "`internal/starter/version.go`"
+release_summary = "The release workflow builds signed binaries for linux (amd64, arm64), macOS (arm64) and Windows (amd64) as static pure-Go binaries, and attaches them to the GitHub release. Users download the archive for their platform and point `LOCATION` at the binary inside. Go developers can also `go install github.com/Query-farm/vgi-starter-go/cmd/vgi-starter-worker@v0.1.0`."
+logging = "Use `log/slog` (the SDK configures it to write to stderr); `--debug` or `--log-level debug` turns it up."
+state_note = "Table-function state (the `S` in `TypedTableFunc[S]`) is gob-encoded into the HTTP continuation token between batches, because each batch can be served by a different request or process. Keep the cursor in *exported* fields (gob silently drops unexported ones, so the scan would restart from row 0), keep it small, and never put secrets in it."
+recipes_run = """
+```sql
+ATTACH 'aggregate' (TYPE vgi, LOCATION '/abs/path/bin/recipes aggregate');
+```
+
+`make build` also builds `bin/recipes`; `bin/recipes <recipe>` serves one recipe. All
+recipes live in `examples/` as one `package main`, and import only the SDK, Arrow, and
+(for `pushdown_sqlite`) the pure-Go `modernc.org/sqlite` the SDK already depends on."""
+lint_location = "bin/vgi-starter-worker"

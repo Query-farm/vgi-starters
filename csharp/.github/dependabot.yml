@@ -1,0 +1,16 @@
+# Keeps GitHub Actions and NuGet dependencies current. QueryFarm.Vgi minor/major bumps
+# are ignored: they can change the wire protocol, which must match the DuckDB
+# extension exactly. Take those through template updates (make template-diff).
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule: { interval: weekly }
+    groups: { actions: { patterns: ["*"] } }
+  - package-ecosystem: nuget
+    directory: /
+    schedule: { interval: weekly }
+    groups: { nuget: { patterns: ["*"] } }
+    ignore:
+      - dependency-name: QueryFarm.Vgi
+        update-types: ["version-update:semver-minor", "version-update:semver-major"]

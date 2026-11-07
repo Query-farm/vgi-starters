@@ -1,0 +1,16 @@
+{
+  "name": "vgi-starter-api",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "check": "tsc --noEmit",
+    "deploy": "wrangler deploy",
+    "parity": "python3 parity.py"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20251001.0",
+    "typescript": "^5.9.0",
+    "wrangler": "^4.100.0"
+  }
+}

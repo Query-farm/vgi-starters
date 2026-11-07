@@ -1,0 +1,16 @@
+# Keeps GitHub Actions and Gradle dependencies current. farm.query:vgi minor/major
+# bumps are ignored: they can change the wire protocol, which must match the DuckDB
+# extension exactly. Take those through template updates (make template-diff).
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule: { interval: weekly }
+    groups: { actions: { patterns: ["*"] } }
+  - package-ecosystem: gradle
+    directory: /
+    schedule: { interval: weekly }
+    groups: { gradle: { patterns: ["*"] } }
+    ignore:
+      - dependency-name: farm.query:vgi
+        update-types: ["version-update:semver-minor", "version-update:semver-major"]

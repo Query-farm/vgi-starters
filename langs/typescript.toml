@@ -1,0 +1,21 @@
+# Variables substituted into shared/*.tmpl for the TypeScript starter.
+lang = "typescript"
+lang_title = "TypeScript"
+sdk_name = "@query-farm/vgi"
+sdk_repo = "https://github.com/Query-farm/vgi-typescript"
+rpc_docs = "https://vgi-rpc-typescript.query.farm"
+prereqs = "[Bun](https://bun.sh) 1.3+"
+location_example = "/abs/path/to/vgi-starter-typescript/bin/vgi-starter-worker"
+metadata_file = "`src/meta.ts` and the `tags`/`examples` of each function"
+version_file = "`package.json`"
+release_summary = "The release workflow compiles the worker with `bun build --compile` into a standalone executable for Linux (x86-64, arm64), macOS (arm64) and Windows (x86-64), and attaches the archives to the GitHub release. Users download one file and point `LOCATION` at it, with no Bun or `node_modules` on the host."
+logging = "Use `log` from `src/log.ts` (it writes to stderr); `--debug` or `--log-level debug` turns it up and also enables the SDK's own tracing (`VGI_DEBUG`)."
+state_note = "Table-function state (`initialState`/`process`) must be a plain object of numbers, bigints, strings, booleans, arrays or nested plain objects (no `Date`, `Map` or class instances): the SDK infers an Arrow schema for it and serializes it. Over HTTP each batch can be served by a different process, so the cursor travels with the request. Keep it small, and never put secrets in it."
+recipes_run = """
+```sql
+ATTACH 'aggregate' (TYPE vgi, LOCATION '/abs/path/bin/run-recipe aggregate');
+```
+
+`bin/run-recipe <recipe>` (a wrapper for `bun run examples/run.ts <recipe>`) serves one recipe. Recipes import only `@query-farm/vgi`,
+Bun built-ins (`bun:sqlite`) and the shared CLI in `src/cli.ts`."""
+lint_location = "bin/vgi-starter-worker"

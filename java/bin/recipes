@@ -1,0 +1,14 @@
+#!/bin/sh
+# Run one recipe from examples/ as a worker: bin/recipes <recipe> [worker flags]
+#   ATTACH 'aggregate' (TYPE vgi, LOCATION '/abs/path/bin/recipes aggregate');
+# Build the jar first: make build (./gradlew recipesJar).
+set -e
+here="$(cd "$(dirname "$0")/.." && pwd)"
+jar="$here/build/recipes/recipes.jar"
+[ -f "$jar" ] || { echo "recipes: $jar not found; run 'make build'" >&2; exit 1; }
+java="${JAVA_HOME:+$JAVA_HOME/bin/}java"
+# shellcheck disable=SC2086
+exec "$java" \
+  --add-opens=java.base/java.nio=ALL-UNNAMED --enable-native-access=ALL-UNNAMED \
+  --sun-misc-unsafe-memory-access=allow \
+  -Dio.netty.noUnsafe=false $JAVA_OPTS -jar "$jar" "$@"

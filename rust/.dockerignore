@@ -1,0 +1,5 @@
+target/
+.tools/
+.git/
+**/__pycache__/
+duckdb_unittest_tempdir/

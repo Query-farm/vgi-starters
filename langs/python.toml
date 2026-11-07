@@ -1,0 +1,21 @@
+# Variables substituted into shared/*.tmpl for the Python starter.
+lang = "python"
+lang_title = "Python"
+sdk_name = "vgi-python"
+sdk_repo = "https://github.com/Query-farm/vgi-python"
+rpc_docs = "https://vgi-rpc-python.query.farm"
+prereqs = "Python 3.13+"
+location_example = "/abs/path/to/vgi-starter-python/.venv/bin/vgi-starter-worker"
+metadata_file = "`src/starter_worker/meta.py` and each function's `class Meta`"
+version_file = "`pyproject.toml`"
+release_summary = "The release workflow builds the wheel and sdist, attaches them to the GitHub release, and (if you set the repository variable `PYPI_PUBLISH=true` and configure PyPI Trusted Publishing) publishes to PyPI, so users can run `uvx vgi-starter-worker`. Without PyPI, users install straight from the repo with `uvx --from git+https://github.com/Query-farm/vgi-starter-python@v0.1.0 vgi-starter-worker`."
+logging = "Use the standard `logging` module (the SDK routes it to stderr); `--debug` or `--log-level DEBUG` turns it up."
+state_note = "Table-function state (`initial_state`/`process`) must subclass `ArrowSerializableDataclass`. Over HTTP each batch can be served by a different process, so the cursor travels with the request. Keep it small, and never put secrets in it."
+recipes_run = """
+```sql
+ATTACH 'aggregate' (TYPE vgi, LOCATION '/abs/path/.venv/bin/python /abs/path/examples/run.py aggregate');
+```
+
+`examples/run.py <recipe>` serves one recipe. Recipes import only `vgi`, `pyarrow` and the
+standard library."""
+lint_location = ".venv/bin/vgi-starter-worker"

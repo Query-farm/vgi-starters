@@ -1,0 +1,49 @@
+name: Starter
+
+# make check + template-init for one language tree, on the three OSes that matter
+# for the lane that differs most (integration). Called by ci.yml.
+
+on:
+  workflow_call:
+    inputs:
+      lang:
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: ${{ inputs.lang }} / make check
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with: { python-version: "3.13" }
+      - uses: ./.github/actions/toolchain
+        with: { lang: "${{ inputs.lang }}" }
+      - run: make -C ${{ inputs.lang }} check
+
+  template-init:
+    name: ${{ inputs.lang }} / make init + check
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with: { python-version: "3.13" }
+      - uses: ./.github/actions/toolchain
+        with: { lang: "${{ inputs.lang }}" }
+      - name: Initialize a copy as acme_demo
+        run: |
+          cp -R "${{ inputs.lang }}" /tmp/acme && cd /tmp/acme
+          git init -q && git config user.email ci@example.com && git config user.name ci
+          git add -A && git commit -qm template
+          make init NAME=acme_demo
+          git add -A && git commit -qm init
+          if git grep -n -I -i -w starter -- . ':!scripts/vgi_template.py' ':!.vgi-starter.json' | grep -vi 'starter template'; then
+            echo "::error::identifiers above were not renamed"; exit 1
+          fi
+          make check

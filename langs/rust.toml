@@ -1,0 +1,22 @@
+# Variables substituted into shared/*.tmpl for the Rust starter.
+lang = "rust"
+lang_title = "Rust"
+sdk_name = "vgi"
+sdk_repo = "https://github.com/Query-farm/vgi-rust"
+rpc_docs = "https://vgi-rpc-rust.query.farm"
+prereqs = "Rust 1.97+ (rustup)"
+location_example = "/abs/path/to/vgi-starter-rust/target/release/vgi-starter-worker"
+metadata_file = "`src/meta.rs` and each function's `metadata()`"
+version_file = "`Cargo.toml`"
+release_summary = "The release workflow builds `vgi-starter-worker` for Linux (x86_64, arm64), macOS (arm64) and Windows (x86_64) and attaches one `.tar.gz` per DuckDB platform (`vgi-starter-rust-v0.1.0-linux_amd64.tar.gz`, …) to the GitHub release, with SHA256 sums and SLSA provenance. Users download the archive for their platform and point `LOCATION` at the binary inside."
+logging = "Use the `log` crate macros (`log::info!`, `log::debug!`); `env_logger` sends them to stderr. `--debug` or `RUST_LOG=debug` turns them up."
+state_note = "A table function's producer is rebuilt from the call's arguments on every HTTP request, so list the fields that advance in `vgi::resume_fields!(...)`; they travel in the continuation token. Without it a multi-batch scan fails over HTTP. Keep that state small, and never put secrets in it."
+recipes_run = """
+```sql
+ATTACH 'aggregate' (TYPE vgi, LOCATION '/abs/path/target/release/examples/recipes aggregate');
+```
+
+`target/release/examples/recipes <recipe>` serves one recipe (`make build` compiles it).
+Recipes live in `examples/` as modules of one dispatcher, `examples/run.rs`, and use only
+`vgi`, `arrow-array`/`arrow-schema`, `serde_json` and (for `pushdown_sqlite`) `rusqlite`."""
+lint_location = "target/release/vgi-starter-worker"

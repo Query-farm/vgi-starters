@@ -1,0 +1,8 @@
+{
+  "template": "vgi-starter-csharp",
+  "lang": "csharp",
+  "template_version": "0.1.0",
+  "post_init": ["dotnet restore --force-evaluate", "dotnet format"],
+  "template_only_files": [".github/workflows/template-init.yml"],
+  "optional_files": [".github/workflows/nightly.yml", ".github/dependabot.yml"]
+}

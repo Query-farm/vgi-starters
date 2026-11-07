@@ -1,0 +1,55 @@
+name: CI
+
+# Runs each language tree's own CI workflow (as a reusable workflow) plus the
+# drift check. Each tree's ci.yml is exactly what its template repo will run.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  # Lets actionlint resolve each tree's `uses: ./.github/workflows/ci.yml` inside the monorepo.
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  render:
+    name: Shared files in sync
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13" }
+      - run: python3 tools/render.py --check
+
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      langs: ${{ steps.pick.outputs.langs }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - id: pick
+        run: |
+          all='["python","typescript","go","rust","java","csharp"]'
+          base="${{ github.event.pull_request.base.sha || github.event.before }}"
+          if [ -z "$base" ] || ! git cat-file -e "$base" 2>/dev/null \
+             || git diff --name-only "$base" HEAD | grep -qE '^(shared|tools)/|^\.github/'; then
+            echo "langs=$all" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          picked=$(git diff --name-only "$base" HEAD | sed -nE 's#^(langs/)?(python|typescript|go|rust|java|csharp)[/.].*#\2#p' | sort -u \
+                   | jq -R . | jq -sc .)
+          echo "langs=${picked:-[]}" >> "$GITHUB_OUTPUT"
+
+  starter:
+    needs: [changes]
+    if: needs.changes.outputs.langs != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        lang: ${{ fromJSON(needs.changes.outputs.langs) }}
+    uses: ./.github/workflows/starter.yml
+    with:
+      lang: ${{ matrix.lang }}

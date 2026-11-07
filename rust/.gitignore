@@ -1,0 +1,6 @@
+/target/
+.tools/
+__pycache__/
+*.py[cod]
+duckdb_unittest_tempdir/
+.DS_Store

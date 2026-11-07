@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- One executable serves every recipe: `vgi-recipes <recipe> [worker flags]`. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>vgi-recipes</AssemblyName>
+    <RootNamespace>Starter.Recipes</RootNamespace>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="QueryFarm.Vgi" />
+    <PackageReference Include="Microsoft.Data.Sqlite" />
+  </ItemGroup>
+
+</Project>

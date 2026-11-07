@@ -1,0 +1,31 @@
+name: Release
+
+# Push a tag like v0.1.0. This gates on CI, then the shared vgi-actions workflow
+# builds vgi-starter-worker for every DuckDB platform (linux_amd64, linux_arm64,
+# osx_arm64, windows_amd64), packs one .tar.gz per platform, signs each with
+# cosign (keyless), attests SLSA provenance and attaches them to the GitHub
+# release. Point a DuckDB LOCATION at the binary inside the archive.
+
+on:
+  push:
+    tags: ['v*.*.*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml
+
+  release:
+    needs: [ci]
+    permissions:
+      contents: write        # create the release, attach assets
+      id-token: write        # keyless signing + provenance
+      attestations: write
+    uses: Query-farm/vgi-actions/.github/workflows/rust-release.yml@v1
+    secrets: inherit
+    with:
+      bin: vgi-starter-worker
+      version_check_cmd: ci/check-version.sh
