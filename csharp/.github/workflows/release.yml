@@ -63,7 +63,9 @@ jobs:
           global-json-file: global.json
       - name: Publish
         run: |
-          dotnet restore src/Starter.Worker --locked-mode -r "${{ matrix.rid }}"
+          # The lock file covers every RID in <RuntimeIdentifiers>; restoring with -r would
+          # narrow the RID set and fail locked mode (NU1004).
+          dotnet restore src/Starter.Worker --locked-mode
           dotnet publish src/Starter.Worker -c Release --no-restore -r "${{ matrix.rid }}" --self-contained \
             -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o "out/${{ matrix.rid }}"
       - name: Archive
