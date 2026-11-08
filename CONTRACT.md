@@ -66,13 +66,16 @@ Mirror `python/src/starter_worker/meta.py` and each function's `Meta`:
   - `HAYBARN_UNITTEST`, `TRANSPORT`, and `PYTHON` (any python3; `uv run --no-project python` works).
 - **`.vgi-starter.json`:**
   - `template`, `lang`, `template_version` `0.1.0` (set by publish; `template-diff` compares against that tag)
-  - `post_init` commands that regenerate lockfiles after the rename
+  - `post_init` commands that regenerate lockfiles after the rename **without upgrading anything**:
+    the SDK version the lockfile pins must survive `make init` (no `--force-evaluate` or
+    `--write-locks` against a floating range; template-init CI compares the pin before and after)
   - `template_only_files` `[".github/workflows/template-init.yml"]`
   - `optional_files`
 - **`scripts/vgi_template.py init <name>`** must yield a tree that passes `make check` with no leftover word `starter` except "starter template". It renames:
   - `vgi-starter-worker`, `starter_worker`, `starter-worker`, `StarterWorker`, `Starter`, `starter`
   - `STARTER_`, `starter_api`
-  - the paths containing them
+  - the paths containing them, including the launchers in a top-level `bin/`, also when the
+    copy is not a git checkout
 
   Name identifiers so these rules produce valid code (e.g. a Go module path, a C# namespace `Starter.Worker`, a Java package `farm.query.starter`).
 - **Recipes** (`examples/`), all served by one dispatcher:
@@ -99,10 +102,10 @@ Mirror `python/src/starter_worker/meta.py` and each function's `Meta`:
   | Language | SDK |
   |---|---|
   | TS | `@query-farm/vgi` 0.48.x |
-  | Go | `github.com/Query-farm/vgi-go` v0.39.x |
+  | Go | `github.com/Query-farm/vgi-go` v0.40.x |
   | Rust | `vgi` 0.49.x |
   | Java | `farm.query:vgi` 0.46.x |
-  | C# | `QueryFarm.Vgi` 0.23.x |
+  | C# | `QueryFarm.Vgi` 0.24.x |
   | Python | `vgi-python` 0.49.x |
 
 ## 3a. Rules learned while building the trees

@@ -2,7 +2,7 @@
   "template": "vgi-starter-java",
   "lang": "java",
   "template_version": "0.1.0",
-  "post_init": ["./gradlew --console=plain -q dependencies --write-locks", "./gradlew --console=plain -q spotlessApply"],
+  "post_init": ["./gradlew --console=plain -q spotlessApply"],
   "template_only_files": [".github/workflows/template-init.yml"],
   "optional_files": [".github/workflows/nightly.yml", ".github/dependabot.yml"]
 }

@@ -36,12 +36,35 @@ jobs:
         with: { python-version: "3.13" }
       - uses: ./.github/actions/toolchain
         with: { lang: "${{ inputs.lang }}" }
+      - name: Rename a copy outside git (no git ls-files to list the files)
+        run: |
+          cp -R "${{ inputs.lang }}" /tmp/acme-nogit && cd /tmp/acme-nogit
+          uv run --no-project python scripts/vgi_template.py init acme_demo --no-post
+          left=$(find . -iname '*starter*' -not -name .vgi-starter.json)
+          if [ -n "$left" ]; then echo "$left"; echo "::error::paths above were not renamed"; exit 1; fi
       - name: Initialize a copy as acme_demo
         run: |
+          # The SDK version the template's lockfile pins; make init must keep it.
+          sdk_pin() {
+            case "${{ inputs.lang }}" in
+              python) grep -A1 '^name = "vgi-python"$' uv.lock ;;
+              typescript) grep -o '"@query-farm/vgi@[0-9.]*"' bun.lock ;;
+              go) grep 'Query-farm/vgi-go ' go.mod ;;
+              rust) grep -A1 '^name = "vgi"$' Cargo.lock ;;
+              java) grep '^farm\.query:vgi:' gradle.lockfile ;;
+              csharp) find . -name packages.lock.json -exec grep -h -A3 '"QueryFarm.Vgi": {' {} + | grep resolved | sort -u ;;
+            esac
+          }
           cp -R "${{ inputs.lang }}" /tmp/acme && cd /tmp/acme
           git init -q && git config user.email ci@example.com && git config user.name ci
           git add -A && git commit -qm template
+          before=$(sdk_pin)
           make init NAME=acme_demo
+          after=$(sdk_pin)
+          if [ -z "$before" ] || [ "$before" != "$after" ]; then
+            printf 'before:\n%s\nafter:\n%s\n' "$before" "$after"
+            echo "::error::make init changed the pinned SDK version"; exit 1
+          fi
           git add -A && git commit -qm init
           if git grep -n -I -i -w starter -- . ':!scripts/vgi_template.py' ':!.vgi-starter.json' | grep -vi 'starter template' | grep -v 'vgi-starter-api.query-farm.services' | grep -v "'Query-farm/vgi-starter-'"; then
             echo "::error::identifiers above were not renamed"; exit 1
