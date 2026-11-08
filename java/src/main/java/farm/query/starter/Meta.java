@@ -282,6 +282,9 @@ public final class Meta {
   private static Map<String, String> catalogTags() {
     Map<String, String> t = new LinkedHashMap<>();
     t.put("vgi.title", "VGI Starter Worker");
+    t.put(
+        "vgi.subtitle",
+        "Example DuckDB functions to rename and replace: a scalar, a table function and a REST API reader.");
     t.put("vgi.doc_llm", CATALOG_DOC_LLM);
     t.put("vgi.doc_md", CATALOG_DOC_MD);
     t.put("vgi.source_url", SOURCE_URL);

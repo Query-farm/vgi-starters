@@ -123,6 +123,7 @@ export const AGENT_TEST_TASKS = [
 
 export const CATALOG_TAGS: Record<string, string> = {
   "vgi.title": "VGI Starter Worker",
+  "vgi.subtitle": "Example DuckDB functions to rename and replace: a scalar, a table function and a REST API reader.",
   "vgi.doc_llm": CATALOG_DOC_LLM,
   "vgi.doc_md": CATALOG_DOC_MD,
   "vgi.source_url": SOURCE_URL,

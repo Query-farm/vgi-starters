@@ -188,6 +188,10 @@ fn agent_test_tasks() -> String {
 pub fn catalog_tags() -> Vec<(String, String)> {
     vec![
         ("vgi.title".into(), "VGI Starter Worker".into()),
+        (
+            "vgi.subtitle".into(),
+            "Example DuckDB functions to rename and replace: a scalar, a table function and a REST API reader.".into(),
+        ),
         ("vgi.doc_llm".into(), CATALOG_DOC_LLM.into()),
         ("vgi.doc_md".into(), CATALOG_DOC_MD.into()),
         ("vgi.source_url".into(), SOURCE_URL.into()),

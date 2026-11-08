@@ -219,6 +219,7 @@ public static class Meta
     public static Dictionary<string, string> CatalogTags() => new()
     {
         ["vgi.title"] = "VGI Starter Worker",
+        ["vgi.subtitle"] = "Example DuckDB functions to rename and replace: a scalar, a table function and a REST API reader.",
         ["vgi.doc_llm"] = CatalogDocLlm,
         ["vgi.doc_md"] = CatalogDocMd,
         ["vgi.source_url"] = SourceUrl,

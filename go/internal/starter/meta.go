@@ -181,6 +181,7 @@ var agentTestTasks = []agentTask{
 // CatalogTags are the catalog-level discovery tags.
 var CatalogTags = map[string]string{
 	"vgi.title":              "VGI Starter Worker",
+	"vgi.subtitle":           "Example DuckDB functions to rename and replace: a scalar, a table function and a REST API reader.",
 	"vgi.doc_llm":            catalogDocLLM,
 	"vgi.doc_md":             CatalogDocMD,
 	"vgi.source_url":         SourceURL,
