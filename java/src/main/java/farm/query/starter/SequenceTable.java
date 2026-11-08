@@ -133,8 +133,8 @@ public final class SequenceTable extends SimpleTableFunction {
   record Args(long count, long step) {}
 
   /**
-   * Read and validate the arguments. The SDK enforces positional constraints itself; named ones are
-   * checked here too, so both give a clear error at bind time.
+   * Read and validate the arguments. The SDK already enforces the declared constraints at bind;
+   * checking them here too keeps this method safe to call on its own (unit tests, createProducer).
    *
    * @param p the call's arguments
    * @return validated arguments

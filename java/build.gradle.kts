@@ -62,6 +62,12 @@ val examples: SourceSet = sourceSets.create("examples") {
 configurations.named("examplesImplementation") { extendsFrom(configurations.implementation.get()) }
 configurations.named("examplesRuntimeOnly") { extendsFrom(configurations.runtimeOnly.get()) }
 
+// Unit tests can exercise the recipes too (src/test/java/.../recipes).
+sourceSets.test {
+    compileClasspath += examples.output
+    runtimeClasspath += examples.output
+}
+
 // Lockfile (gradle.lockfile): `0.46.+` floats within the minor, the lockfile pins
 // what CI tested. Refresh with: ./gradlew dependencies --write-locks
 dependencyLocking {

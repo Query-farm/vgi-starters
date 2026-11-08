@@ -53,7 +53,11 @@ public final class TransformRows extends PassthroughTIOFunction {
   @Override
   public BindResponse onBind(TableInOutBindParams params) {
     Schema in = params.inputSchema();
-    if (in != null && !in.getFields().isEmpty() && in.findField("value") == null) {
+    // Not in.findField("value") == null: Arrow's Schema.findField throws instead of returning
+    // null for a missing field, which would replace this message with Arrow's.
+    if (in != null
+        && !in.getFields().isEmpty()
+        && in.getFields().stream().noneMatch(f -> f.getName().equals("value"))) {
       throw new InvalidArgumentException("positive_only needs an input column named 'value'");
     }
     return super.onBind(params);
