@@ -156,9 +156,20 @@ vgi-agent-tests.yaml  # private graders for the agent test tasks
 | write data out to a file or service | `COPY … TO` with a copy function |
 | accept `INSERT` / `UPDATE` / `DELETE` | a catalog table with insert/update/delete functions |
 
-The [examples/](examples/) folder has a recipe for most of these. Writable tables are
-covered in the C# SDK's API reference (look for the table descriptor's
-insert, update and delete functions).
+The [examples/](examples/) folder has a recipe for most of these. Writable tables have no
+recipe:
+
+A writable table is a `CatalogTable` that names an `ITableInOutFunction` per operation in
+`InsertFunction`, `UpdateFunction` and `DeleteFunction`, with the richest result each one
+produces in `WriteResultModes`. `QueryFarm.Vgi.Catalog.WriteResults` and `WriteRequest.From`
+read DuckDB's `write_options` argument and build the result (`WriteResults.Schema`,
+`WriteResults.Batch`); UPDATE and DELETE need a `WriteResults.RowIdField()` column, named in
+`CatalogTable.RowIdColumn` and emitted by a scan with projection pushdown. Transactions:
+return `AttachContext { SupportsTransactions = … }` from `Worker.OnAttach` and pass a
+`TransactionHooks` subclass to `Worker.TransactionHooks`. The `WriteResults` helpers and
+`TransactionHooks` need QueryFarm.Vgi 0.24.2 or newer: if `packages.lock.json` has an older
+0.24.x, run `make lock` (the newest 0.24.x; every 0.24.x speaks the same protocol). See
+[Writable tables](https://github.com/Query-farm/vgi-csharp#writable-tables) in the SDK README.
 
 ## Secrets and configuration
 

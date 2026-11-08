@@ -158,9 +158,20 @@ vgi-agent-tests.yaml  # private graders for the agent test tasks
 | write data out to a file or service | `COPY … TO` with a copy function |
 | accept `INSERT` / `UPDATE` / `DELETE` | a catalog table with insert/update/delete functions |
 
-The [examples/](examples/) folder has a recipe for most of these. Writable tables are
-covered in the Go SDK's API reference (look for the table descriptor's
-insert, update and delete functions).
+The [examples/](examples/) folder has a recipe for most of these. Writable tables have no
+recipe:
+
+A writable table is a `vgi.CatalogTable` that names a table in-out function per operation in
+`InsertFunction`, `UpdateFunction` and `DeleteFunction`, with the richest result each one
+produces in `WriteResultModes`. A write function declares `vgi.WriteOptionsArgSpec()`, reads
+the requested mode with `vgi.ParseWriteOptions`, and binds and emits
+`vgi.WriteResultSchema` / `vgi.WriteResultBatch`. UPDATE and DELETE need a `vgi.RowIDField`
+column emitted by a scan that declares projection pushdown. Transactions:
+`vgi.WithSupportsTransactions` (or `AttachDecision.SupportsTransactions` per ATTACH) and
+`vgi.WithTransactionHooks`. The write helpers and transaction hooks need vgi-go v0.40.3 or
+newer: if `go.mod` has an older v0.40.x, run `go get github.com/Query-farm/vgi-go@v0.40`
+(the newest v0.40.x; every v0.40.x speaks the same protocol). See [Writable catalog tables](https://github.com/Query-farm/vgi-go#writable-catalog-tables)
+and [`examples/writable_tx`](https://github.com/Query-farm/vgi-go/tree/main/examples/writable_tx).
 
 ## Secrets and configuration
 

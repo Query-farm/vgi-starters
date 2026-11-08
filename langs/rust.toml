@@ -20,3 +20,15 @@ ATTACH 'aggregate' (TYPE vgi, LOCATION '/abs/path/target/release/examples/recipe
 Recipes live in `examples/` as modules of one dispatcher, `examples/run.rs`, and use only
 `vgi`, `arrow-array`/`arrow-schema`, `serde_json` and (for `pushdown_sqlite`) `rusqlite`."""
 lint_location = "target/release/vgi-starter-worker"
+writable_api = "`CatTable::with_insert_function` / `with_update_function` / `with_delete_function`"
+writable_docs = """
+A writable table is a `CatTable` that names a table in-out function per operation with
+`with_insert_function`, `with_update_function` and `with_delete_function`. The
+[`vgi::write_results`](https://docs.rs/vgi/latest/vgi/write_results/) module reads DuckDB's
+`write_options` argument (`WriteOptions::from_arguments`) and builds the result
+(`write_result_schema`, `write_result_batch`); UPDATE and DELETE need a `row_id_field` column
+emitted by a scan with projection pushdown. Transactions: set `CatalogModel::transactions` to a
+`CatalogTransactions` implementation (`supports_transactions` per ATTACH, `begin` / `commit` /
+`rollback`). These need vgi 0.49.5 or newer: if `Cargo.lock` has an older 0.49.x, run
+`cargo update -p vgi` (the newest 0.49.x; every 0.49.x speaks the same protocol). See
+[Writable tables, transactions and attach secrets](https://github.com/Query-farm/vgi-rust#writable-tables-transactions-and-attach-secrets)."""

@@ -156,9 +156,18 @@ vgi-agent-tests.yaml  # private graders for the agent test tasks
 | write data out to a file or service | `COPY … TO` with a copy function |
 | accept `INSERT` / `UPDATE` / `DELETE` | a catalog table with insert/update/delete functions |
 
-The [examples/](examples/) folder has a recipe for most of these. Writable tables are
-covered in the TypeScript SDK's API reference (look for the table descriptor's
-insert, update and delete functions).
+The [examples/](examples/) folder has a recipe for most of these. Writable tables have no
+recipe:
+
+A writable table is a `TableDescriptor` that names a table in-out function per operation in
+`insertFunction`, `updateFunction` and `deleteFunction`, with the richest result each one
+produces in `writeResultModes`. `writeOptions`, `writeResultSchema`, `writeResultBatch` and
+`rowIdField` (all exported by `@query-farm/vgi`) read DuckDB's `write_options` argument and
+build the result. UPDATE and DELETE need the table's scan `function` to emit `rowIdField()` and
+support projection pushdown. Transactions: return `supports_transactions` from the catalog's
+attach and override `transactionBegin` / `transactionCommit` / `transactionRollback`.
+[`examples/simple-writable-worker.ts`](https://github.com/Query-farm/vgi-typescript/blob/main/examples/simple-writable-worker.ts)
+and `examples/writable-tx-worker.ts` in vgi-typescript are complete workers.
 
 ## Secrets and configuration
 

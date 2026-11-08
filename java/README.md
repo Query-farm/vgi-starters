@@ -155,9 +155,20 @@ vgi-agent-tests.yaml   # private graders for the agent test tasks
 | write data out to a file or service | `COPY … TO` with a copy function |
 | accept `INSERT` / `UPDATE` / `DELETE` | a catalog table with insert/update/delete functions |
 
-The [examples/](examples/) folder has a recipe for most of these. Writable tables are
-covered in the Java SDK's API reference (look for the table descriptor's
-insert, update and delete functions).
+The [examples/](examples/) folder has a recipe for most of these. Writable tables have no
+recipe:
+
+A writable table is a `CatalogTable` whose builder names a table in-out function per operation
+with `insertFunction`, `updateFunction` and `deleteFunction`, and the richest result each one
+produces with `writeResultMode`. The `farm.query.vgi.write` package reads DuckDB's
+`write_options` argument (`WriteOptions.from`) and builds the result
+(`WriteResults.resultSchema`, `WriteResults.resultBatch`); UPDATE and DELETE need a
+`WriteResults.rowIdField()` column emitted by a scan with projection pushdown. Transactions:
+`Worker.onAttach` decides `supports_transactions` per ATTACH and `Worker.transactionHooks` runs
+your begin / commit / rollback code. These need vgi-java 0.46.3 or newer: if `gradle.lockfile` has
+an older 0.46.x, run `./gradlew dependencies --write-locks` (the newest 0.46.x; every 0.46.x
+speaks the same protocol). See
+[Writable tables, transactions and ATTACH options](https://github.com/Query-farm/vgi-java/blob/main/docs/writable-tables-and-transactions.md).
 
 ## Secrets and configuration
 

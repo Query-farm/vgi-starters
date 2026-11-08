@@ -157,9 +157,19 @@ vgi-agent-tests.yaml  # private graders for the agent test tasks
 | write data out to a file or service | `COPY … TO` with a copy function |
 | accept `INSERT` / `UPDATE` / `DELETE` | a catalog table with insert/update/delete functions |
 
-The [examples/](examples/) folder has a recipe for most of these. Writable tables are
-covered in the Rust SDK's API reference (look for the table descriptor's
-insert, update and delete functions).
+The [examples/](examples/) folder has a recipe for most of these. Writable tables have no
+recipe:
+
+A writable table is a `CatTable` that names a table in-out function per operation with
+`with_insert_function`, `with_update_function` and `with_delete_function`. The
+[`vgi::write_results`](https://docs.rs/vgi/latest/vgi/write_results/) module reads DuckDB's
+`write_options` argument (`WriteOptions::from_arguments`) and builds the result
+(`write_result_schema`, `write_result_batch`); UPDATE and DELETE need a `row_id_field` column
+emitted by a scan with projection pushdown. Transactions: set `CatalogModel::transactions` to a
+`CatalogTransactions` implementation (`supports_transactions` per ATTACH, `begin` / `commit` /
+`rollback`). These need vgi 0.49.5 or newer: if `Cargo.lock` has an older 0.49.x, run
+`cargo update -p vgi` (the newest 0.49.x; every 0.49.x speaks the same protocol). See
+[Writable tables, transactions and attach secrets](https://github.com/Query-farm/vgi-rust#writable-tables-transactions-and-attach-secrets).
 
 ## Secrets and configuration
 

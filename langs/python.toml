@@ -19,3 +19,14 @@ ATTACH 'aggregate' (TYPE vgi, LOCATION '/abs/path/.venv/bin/python /abs/path/exa
 `examples/run.py <recipe>` serves one recipe. Recipes import only `vgi`, `pyarrow` and the
 standard library."""
 lint_location = ".venv/bin/vgi-starter-worker"
+writable_api = "`Table(insert_function=…, update_function=…, delete_function=…)`"
+writable_docs = """
+A writable table is a catalog `Table` that names a table in-out function per operation in
+`insert_function`, `update_function` and `delete_function`, with the richest result each one
+produces in `write_result_modes`. The helpers in `vgi.write_results` (`write_options`,
+`write_result_schema`, `write_result_batch`, `row_id_field`) read DuckDB's `write_options`
+argument and build the result. UPDATE and DELETE need a scan function that emits
+`row_id_field()` and declares projection pushdown. Transactions: override `attach_supports_transactions`
+and `catalog_transaction_begin` / `_commit` / `_rollback` on the catalog. See
+[Writable tables](https://github.com/Query-farm/vgi-python/blob/main/docs/catalog-interface.md#writable-tables)
+in the vgi-python docs."""

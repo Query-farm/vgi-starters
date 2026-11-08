@@ -100,9 +100,21 @@ reviewed. It's optional, so run it before publishing.
 | combine many rows into one value | aggregate |
 | a fixed dataset referenced by name | catalog table |
 | write data out to a file or service | `COPY … TO` copy function |
-| accept INSERT / UPDATE / DELETE | catalog table with insert/update/delete functions (see the SDK API reference) |
+| accept INSERT / UPDATE / DELETE | writable catalog table: `CatalogTable.InsertFunction` / `UpdateFunction` / `DeleteFunction` |
 
-Recipes for most kinds are in `examples/`.
+Recipes for most kinds are in `examples/`. Writable tables have no recipe:
+
+A writable table is a `CatalogTable` that names an `ITableInOutFunction` per operation in
+`InsertFunction`, `UpdateFunction` and `DeleteFunction`, with the richest result each one
+produces in `WriteResultModes`. `QueryFarm.Vgi.Catalog.WriteResults` and `WriteRequest.From`
+read DuckDB's `write_options` argument and build the result (`WriteResults.Schema`,
+`WriteResults.Batch`); UPDATE and DELETE need a `WriteResults.RowIdField()` column, named in
+`CatalogTable.RowIdColumn` and emitted by a scan with projection pushdown. Transactions:
+return `AttachContext { SupportsTransactions = … }` from `Worker.OnAttach` and pass a
+`TransactionHooks` subclass to `Worker.TransactionHooks`. The `WriteResults` helpers and
+`TransactionHooks` need QueryFarm.Vgi 0.24.2 or newer: if `packages.lock.json` has an older
+0.24.x, run `make lock` (the newest 0.24.x; every 0.24.x speaks the same protocol). See
+[Writable tables](https://github.com/Query-farm/vgi-csharp#writable-tables) in the SDK README.
 
 ## Sharp edges (read before writing code)
 
@@ -111,12 +123,12 @@ Recipes for most kinds are in `examples/`.
 - **Scalars have no named arguments.** For an optional scalar argument, add an overload
   (a second function with the same SQL name and one more argument). Named arguments
   (`step := 2`) work on table functions only.
-- **Declared constraints aren't a guarantee.** `choices`, `ge`, `le` and `pattern` are
-  published so DuckDB and agents can discover them, but SDKs differ in which ones they
-  enforce: some skip named table arguments, C# enforces none, and `pattern` matching
-  differs (Java requires a full match). Where its SDK doesn't enforce a constraint, the
-  starter re-checks it in bind code. Do the same, and on a columnar scalar argument validate
-  values in the compute body.
+- **Declared constraints are enforced at bind.** `choices`, `ge`, `le` and `pattern` on a
+  constant argument are published so DuckDB and agents can discover them, and the SDK
+  (QueryFarm.Vgi) rejects a violating value when the query is bound, before your code runs, for
+  positional and named arguments alike. `pattern` is an unanchored search (JSON Schema
+  semantics) in every SDK: write `^https?://`, not `https?://`. Constraints cover constant
+  arguments only: validate the values of a columnar scalar argument in the compute body.
 - **Reserved argument names.** DuckDB keywords such as `interval`, `end`, `from`, `order`
   and `table` break `name := value` syntax. Pick another name (`start_date`, `end_date`).
 - **State must be serializable.** A table function's cursor lives on its `ITableFunctionProducer`, which the SDK keeps in the worker process for the whole call (over HTTP too), so plain fields work. Keep it small anyway, and never send secrets back to DuckDB in batch metadata.

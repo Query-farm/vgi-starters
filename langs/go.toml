@@ -20,3 +20,16 @@ ATTACH 'aggregate' (TYPE vgi, LOCATION '/abs/path/bin/recipes aggregate');
 recipes live in `examples/` as one `package main`, and import only the SDK, Arrow, and
 (for `pushdown_sqlite`) the pure-Go `modernc.org/sqlite` the SDK already depends on."""
 lint_location = "bin/vgi-starter-worker"
+writable_api = "`vgi.CatalogTable` `InsertFunction` / `UpdateFunction` / `DeleteFunction`"
+writable_docs = """
+A writable table is a `vgi.CatalogTable` that names a table in-out function per operation in
+`InsertFunction`, `UpdateFunction` and `DeleteFunction`, with the richest result each one
+produces in `WriteResultModes`. A write function declares `vgi.WriteOptionsArgSpec()`, reads
+the requested mode with `vgi.ParseWriteOptions`, and binds and emits
+`vgi.WriteResultSchema` / `vgi.WriteResultBatch`. UPDATE and DELETE need a `vgi.RowIDField`
+column emitted by a scan that declares projection pushdown. Transactions:
+`vgi.WithSupportsTransactions` (or `AttachDecision.SupportsTransactions` per ATTACH) and
+`vgi.WithTransactionHooks`. The write helpers and transaction hooks need vgi-go v0.40.3 or
+newer: if `go.mod` has an older v0.40.x, run `go get github.com/Query-farm/vgi-go@v0.40`
+(the newest v0.40.x; every v0.40.x speaks the same protocol). See [Writable catalog tables](https://github.com/Query-farm/vgi-go#writable-catalog-tables)
+and [`examples/writable_tx`](https://github.com/Query-farm/vgi-go/tree/main/examples/writable_tx)."""

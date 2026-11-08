@@ -99,9 +99,21 @@ reviewed. It's optional, so run it before publishing.
 | combine many rows into one value | aggregate |
 | a fixed dataset referenced by name | catalog table |
 | write data out to a file or service | `COPY … TO` copy function |
-| accept INSERT / UPDATE / DELETE | catalog table with insert/update/delete functions (see the SDK API reference) |
+| accept INSERT / UPDATE / DELETE | writable catalog table: `CatalogTable.Builder.insertFunction` / `updateFunction` / `deleteFunction` |
 
-Recipes for most kinds are in `examples/`.
+Recipes for most kinds are in `examples/`. Writable tables have no recipe:
+
+A writable table is a `CatalogTable` whose builder names a table in-out function per operation
+with `insertFunction`, `updateFunction` and `deleteFunction`, and the richest result each one
+produces with `writeResultMode`. The `farm.query.vgi.write` package reads DuckDB's
+`write_options` argument (`WriteOptions.from`) and builds the result
+(`WriteResults.resultSchema`, `WriteResults.resultBatch`); UPDATE and DELETE need a
+`WriteResults.rowIdField()` column emitted by a scan with projection pushdown. Transactions:
+`Worker.onAttach` decides `supports_transactions` per ATTACH and `Worker.transactionHooks` runs
+your begin / commit / rollback code. These need vgi-java 0.46.3 or newer: if `gradle.lockfile` has
+an older 0.46.x, run `./gradlew dependencies --write-locks` (the newest 0.46.x; every 0.46.x
+speaks the same protocol). See
+[Writable tables, transactions and ATTACH options](https://github.com/Query-farm/vgi-java/blob/main/docs/writable-tables-and-transactions.md).
 
 ## Sharp edges (read before writing code)
 
@@ -110,12 +122,12 @@ Recipes for most kinds are in `examples/`.
 - **Scalars have no named arguments.** For an optional scalar argument, add an overload
   (a second function with the same SQL name and one more argument). Named arguments
   (`step := 2`) work on table functions only.
-- **Declared constraints aren't a guarantee.** `choices`, `ge`, `le` and `pattern` are
-  published so DuckDB and agents can discover them, but SDKs differ in which ones they
-  enforce: some skip named table arguments, C# enforces none, and `pattern` matching
-  differs (Java requires a full match). Where its SDK doesn't enforce a constraint, the
-  starter re-checks it in bind code. Do the same, and on a columnar scalar argument validate
-  values in the compute body.
+- **Declared constraints are enforced at bind.** `choices`, `ge`, `le` and `pattern` on a
+  constant argument are published so DuckDB and agents can discover them, and the SDK
+  (vgi-java) rejects a violating value when the query is bound, before your code runs, for
+  positional and named arguments alike. `pattern` is an unanchored search (JSON Schema
+  semantics) in every SDK: write `^https?://`, not `https?://`. Constraints cover constant
+  arguments only: validate the values of a columnar scalar argument in the compute body.
 - **Reserved argument names.** DuckDB keywords such as `interval`, `end`, `from`, `order`
   and `table` break `name := value` syntax. Pick another name (`start_date`, `end_date`).
 - **State must be serializable.** Table-function state is a `TableProducerState` subclass with a public no-arg constructor. Over HTTP each batch can be served by a different request, so its non-transient fields travel with the request in a token the SDK encrypts (ChaCha20-Poly1305) with the worker's key. Keep them small; mark caches `transient`. The SDK gives per-batch code no access to the call's secrets, so `fetch_items` carries its token in a state field: acceptable only because of that encryption.

@@ -21,3 +21,16 @@ The recipe sources are in `examples/src/farm/query/starter/recipes/`, one class 
 the `Recipes` dispatcher. They use only the SDK, Arrow and the JDK (plus the sqlite-jdbc driver for
 `pushdown_sqlite`)."""
 lint_location = "bin/vgi-starter-worker"
+writable_api = "`CatalogTable.Builder.insertFunction` / `updateFunction` / `deleteFunction`"
+writable_docs = """
+A writable table is a `CatalogTable` whose builder names a table in-out function per operation
+with `insertFunction`, `updateFunction` and `deleteFunction`, and the richest result each one
+produces with `writeResultMode`. The `farm.query.vgi.write` package reads DuckDB's
+`write_options` argument (`WriteOptions.from`) and builds the result
+(`WriteResults.resultSchema`, `WriteResults.resultBatch`); UPDATE and DELETE need a
+`WriteResults.rowIdField()` column emitted by a scan with projection pushdown. Transactions:
+`Worker.onAttach` decides `supports_transactions` per ATTACH and `Worker.transactionHooks` runs
+your begin / commit / rollback code. These need vgi-java 0.46.3 or newer: if `gradle.lockfile` has
+an older 0.46.x, run `./gradlew dependencies --write-locks` (the newest 0.46.x; every 0.46.x
+speaks the same protocol). See
+[Writable tables, transactions and ATTACH options](https://github.com/Query-farm/vgi-java/blob/main/docs/writable-tables-and-transactions.md)."""

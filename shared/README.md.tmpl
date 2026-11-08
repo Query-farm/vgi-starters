@@ -130,9 +130,10 @@ SELECT customer, starter.main.greet(customer, 'formal') FROM read_csv('customers
 | write data out to a file or service | `COPY … TO` with a copy function |
 | accept `INSERT` / `UPDATE` / `DELETE` | a catalog table with insert/update/delete functions |
 
-The [examples/](examples/) folder has a recipe for most of these. Writable tables are
-covered in the {{lang_title}} SDK's API reference (look for the table descriptor's
-insert, update and delete functions).
+The [examples/](examples/) folder has a recipe for most of these. Writable tables have no
+recipe:
+
+{{writable_docs}}
 
 ## Secrets and configuration
 
