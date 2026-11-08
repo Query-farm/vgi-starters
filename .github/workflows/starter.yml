@@ -43,7 +43,13 @@ jobs:
           git add -A && git commit -qm template
           make init NAME=acme_demo
           git add -A && git commit -qm init
-          if git grep -n -I -i -w starter -- . ':!scripts/vgi_template.py' ':!.vgi-starter.json' | grep -vi 'starter template' | grep -v 'vgi-starter-api.query-farm.services'; then
+          if git grep -n -I -i -w starter -- . ':!scripts/vgi_template.py' ':!.vgi-starter.json' | grep -vi 'starter template' | grep -v 'vgi-starter-api.query-farm.services' | grep -v "'Query-farm/vgi-starter-'"; then
             echo "::error::identifiers above were not renamed"; exit 1
           fi
+          # The template-repo guard must survive init unchanged, or forks
+          # named vgi-<name>-* would silently skip publishing.
+          for wf in .github/workflows/docker-publish.yml .github/workflows/release.yml; do
+            grep -q "startsWith(github.repository, 'Query-farm/vgi-starter-')" "$wf" \
+              || { echo "::error::$wf lost its template-repo guard in make init"; exit 1; }
+          done
           make check
