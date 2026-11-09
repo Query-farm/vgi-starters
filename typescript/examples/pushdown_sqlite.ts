@@ -7,10 +7,14 @@
  *
  *   SELECT id, amount FROM pushdown_sqlite.main.orders() WHERE region = 'west' AND amount > 900;
  *
- * Only simple top-level comparisons, IN lists and IS [NOT] NULL are translated
- * here; anything else is left for DuckDB, which always re-checks every row it
- * receives, so partial pushdown is safe. The demo database (bun:sqlite, no
- * dependency) is created on first use in the system temp directory.
+ * DuckDB removes every predicate it pushes down from its own plan and does not
+ * re-check the rows, so the worker must apply each one exactly. Here only
+ * simple top-level comparisons, IN lists and IS [NOT] NULL are translated into
+ * SQL, which narrows what SQLite returns; `autoApplyFilters` then has the SDK
+ * re-apply every pushed predicate to each batch, so the ones not translated
+ * (NOT IN, for example) still hold. Whatever you translate must never drop a
+ * matching row. The demo database (bun:sqlite, no dependency) is created on
+ * first use in the system temp directory.
  */
 
 import { Database, type SQLQueryBindings } from "bun:sqlite";
@@ -94,7 +98,7 @@ function toSql(e: Expr, values: SQLQueryBindings[]): string | undefined {
     const col = unwrap(e.expression);
     if (col.node === "column_ref") return `"${col.columnName}" IS ${e.negated ? "NOT " : ""}NULL`;
   }
-  return undefined; // OR, functions, expressions: not pushed; DuckDB applies them.
+  return undefined; // anything else: not translated; autoApplyFilters applies it.
 }
 
 /** Scan the SQLite `orders` table, pushing filters and projections into SQL. */
@@ -102,6 +106,8 @@ export const orders = defineTableFunction<Record<string, never>, { lastId: numbe
   name: "orders",
   description: "Orders from a SQLite database, with filter and projection pushdown",
   filterPushdown: true,
+  // DuckDB drops pushed predicates from its plan; re-apply them all exactly.
+  autoApplyFilters: true,
   projectionPushdown: true,
   onBind: () => ({ outputSchema: ORDERS_SCHEMA }),
 

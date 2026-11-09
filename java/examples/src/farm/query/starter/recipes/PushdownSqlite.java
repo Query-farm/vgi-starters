@@ -4,6 +4,7 @@ import farm.query.vgi.Worker;
 import farm.query.vgi.function.FunctionMetadata;
 import farm.query.vgi.function.FunctionSpec;
 import farm.query.vgi.pushdown.ComparisonOperator;
+import farm.query.vgi.pushdown.FilterApplier;
 import farm.query.vgi.pushdown.PushdownFilter;
 import farm.query.vgi.table.SimpleTableFunction;
 import farm.query.vgi.table.TableInitParams;
@@ -43,9 +44,13 @@ import org.apache.arrow.vector.types.pojo.Schema;
  *   SELECT id, amount FROM pushdown_sqlite.main.orders() WHERE region = 'west' AND amount > 900;
  * </pre>
  *
- * <p>Only simple top-level comparisons are translated here; anything else is left for DuckDB, which
- * re-checks every row it receives, so partial pushdown is safe. The demo database is created on
- * first use in the system temp directory, through the sqlite-jdbc driver.
+ * <p>DuckDB removes every predicate it pushes down from its own plan and does not re-check the
+ * rows, so the worker must apply each one exactly. Here only simple top-level comparisons, IN lists
+ * and IS [NOT] NULL are translated into SQL, which narrows what SQLite returns; every batch then
+ * goes through the SDK's {@link FilterApplier}, which applies all the pushed predicates exactly, so
+ * the ones not translated (NOT IN, for example) still hold. Whatever you translate must never drop
+ * a matching row. The demo database is created on first use in the system temp directory, through
+ * the sqlite-jdbc driver.
  */
 public final class PushdownSqlite extends SimpleTableFunction {
 
@@ -140,7 +145,7 @@ public final class PushdownSqlite extends SimpleTableFunction {
         case PushdownFilter.IsNull n -> clauses.add(col + " IS NULL");
         case PushdownFilter.IsNotNull n -> clauses.add(col + " IS NOT NULL");
         default -> {
-          // AND/OR/struct/expression filters: not pushed; DuckDB applies them.
+          // Anything else: not translated; produceTick's FilterApplier applies it.
         }
       }
     }
@@ -155,7 +160,8 @@ public final class PushdownSqlite extends SimpleTableFunction {
       throw new IllegalStateException("cannot create " + DB_PATH, e);
     }
     Where w = where(params.decodeFilters().filters());
-    return new Cursor(params.outputSchema(), String.join(" AND ", w.clauses()), w.values());
+    return new Cursor(
+        params.outputSchema(), String.join(" AND ", w.clauses()), w.values(), params.filters());
   }
 
   /** Keyset pagination cursor: the last id emitted, plus the translated query. */
@@ -164,14 +170,17 @@ public final class PushdownSqlite extends SimpleTableFunction {
     public Schema schema;
     public String where;
     public List<Object> values;
+    // DuckDB drops every pushed predicate from its plan: apply them all to each batch.
+    public FilterApplier filters;
 
     /** Required no-arg constructor: the HTTP transport rebuilds state from its fields. */
     public Cursor() {}
 
-    Cursor(Schema schema, String where, List<Object> values) {
+    Cursor(Schema schema, String where, List<Object> values, FilterApplier filters) {
       this.schema = schema;
       this.where = where;
       this.values = values;
+      this.filters = filters;
     }
 
     @Override
@@ -225,7 +234,7 @@ public final class PushdownSqlite extends SimpleTableFunction {
         return;
       }
       root.setRowCount(rows);
-      out.emit(root);
+      out.emit(filters.apply(root));
     }
   }
 

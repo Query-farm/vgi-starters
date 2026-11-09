@@ -7,9 +7,12 @@
 //
 //	SELECT id, amount FROM pushdown_sqlite.main.orders() WHERE region = 'west' AND amount > 900;
 //
-// PushdownFilters.ToSQL translates the filters SQLite can evaluate; anything
-// else becomes 1=1 and is left for DuckDB, which re-checks every row it
-// receives, so partial pushdown is safe. The demo database is created on first
+// DuckDB removes every predicate it pushes into a table function from its own
+// plan and does not re-check the rows, so the worker must apply each one
+// exactly. PushdownFilters.ToSQLExact translates them all into SQL, or returns
+// an error naming one it cannot translate, so a filter is never silently
+// dropped. (AutoApplyFilters would re-apply them instead, but needs the cgo
+// DuckDB evaluator in vgi/exprduckdb.) The demo database is created on first
 // use in the system temp directory, with the pure-Go modernc.org/sqlite driver
 // the SDK already depends on.
 
@@ -121,7 +124,11 @@ func (*orders) Process(ctx context.Context, params *vgi.ProcessParams, state *or
 	}
 	where, args := "id > ?", []any{state.LastID}
 	if pf := params.CurrentPushdownFilters; pf != nil {
-		if clause, values := pf.ToSQL(quoteIdent, "?"); clause != "" {
+		clause, values, err := pf.ToSQLExact(quoteIdent, "?")
+		if err != nil {
+			return fmt.Errorf("orders: %w", err)
+		}
+		if clause != "" {
 			where += " AND " + clause
 			args = append(args, values...)
 		}

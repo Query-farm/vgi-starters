@@ -6,9 +6,13 @@
 //
 //   SELECT id, amount FROM pushdown_sqlite.main.orders() WHERE region = 'west' AND amount > 900;
 //
-// Only simple comparisons, IN lists and IS [NOT] NULL on a column are translated;
-// anything else is left for DuckDB, which re-checks every row it receives, so
-// partial pushdown is safe. The demo database is created on first use in the
+// DuckDB removes every predicate it pushes down from its own plan and does not
+// re-check the rows, so the worker must apply each one exactly. Here only simple
+// comparisons, IN lists and IS [NOT] NULL on a column are translated into SQL,
+// which narrows what SQLite returns; every row is then checked against all the
+// pushed predicates with FilterSet.Matches, so the ones not translated (NOT IN
+// arrives as NOT(IN ...), for example) still hold. Whatever you translate must
+// never drop a matching row. The demo database is created on first use in the
 // system temp directory.
 
 using System.Text.Json;
@@ -95,7 +99,7 @@ public sealed class Orders : ITableFunction
             Translate(predicate.Expression, filters!, clauses, values);
         }
 
-        return new Producer(initParams.ProjectedSchema, clauses, values);
+        return new Producer(initParams.ProjectedSchema, filters, clauses, values);
     }
 
     /// <summary>Creates a deterministic 2,000-row orders table if it does not exist.</summary>
@@ -187,12 +191,12 @@ public sealed class Orders : ITableFunction
 
                 break;
             default:
-                break; // OR, NOT, functions, casts: DuckDB applies them.
+                break; // OR, NOT, functions, casts: not translated; Produce checks them per row.
         }
     }
 
     /// <summary>Keyset pagination: one page of matching rows per call, only the projected columns.</summary>
-    private sealed class Producer(Schema schema, List<string> clauses, List<object?> values) : ITableFunctionProducer
+    private sealed class Producer(Schema schema, FilterSet? filters, List<string> clauses, List<object?> values) : ITableFunctionProducer
     {
         private long _lastId;
 
@@ -212,11 +216,28 @@ public sealed class Orders : ITableFunction
 
             var builders = schema.FieldsList.Select(f => f.DataType is StringType ? (object)new StringArray.Builder() : new Int64Array.Builder()).ToList();
             var rows = 0;
+            var read = 0;
             using (var reader = cmd.ExecuteReader())
             {
                 while (reader.Read())
                 {
                     _lastId = reader.GetInt64(0);
+                    read++;
+                    // DuckDB will not re-check this row: apply every pushed predicate exactly.
+                    if (filters is not null)
+                    {
+                        var row = new Dictionary<string, object?>();
+                        for (var c = 0; c < builders.Count; c++)
+                        {
+                            row[schema.FieldsList[c].Name] = reader.IsDBNull(c + 1) ? null : reader.GetValue(c + 1);
+                        }
+
+                        if (!filters.Matches(row))
+                        {
+                            continue;
+                        }
+                    }
+
                     for (var c = 0; c < builders.Count; c++)
                     {
                         if (builders[c] is StringArray.Builder s)
@@ -237,7 +258,7 @@ public sealed class Orders : ITableFunction
                 }
             }
 
-            if (rows == 0)
+            if (read == 0)
             {
                 output.Finish();
                 return;
