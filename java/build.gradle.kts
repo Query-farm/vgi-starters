@@ -68,7 +68,7 @@ sourceSets.test {
     runtimeClasspath += examples.output
 }
 
-// Lockfile (gradle.lockfile): `0.46.+` floats within the minor, the lockfile pins
+// Lockfile (gradle.lockfile): `0.47.+` floats within the minor, the lockfile pins
 // what CI tested. Refresh with: ./gradlew dependencies --write-locks
 dependencyLocking {
     lockAllConfigurations()
@@ -77,7 +77,7 @@ dependencyLocking {
 dependencies {
     // The VGI SDK. Minor bumps can change the wire protocol, which must match the
     // DuckDB extension exactly; take them through template updates.
-    implementation("farm.query:vgi:0.46.+")
+    implementation("farm.query:vgi:0.47.+")
     // JSON parsing for fetch_items (already on the SDK's runtime classpath).
     implementation("com.fasterxml.jackson.core:jackson-databind:2.21.0")
     // SLF4J backend: slf4j-simple logs to stderr, never stdout (the protocol channel).

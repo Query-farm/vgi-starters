@@ -112,8 +112,8 @@ A writable table is a `CatTable` that names a table in-out function per operatio
 (`write_result_schema`, `write_result_batch`); UPDATE and DELETE need a `row_id_field` column
 emitted by a scan with projection pushdown. Transactions: set `CatalogModel::transactions` to a
 `CatalogTransactions` implementation (`supports_transactions` per ATTACH, `begin` / `commit` /
-`rollback`). These need vgi 0.49.5 or newer: if `Cargo.lock` has an older 0.49.x, run
-`cargo update -p vgi` (the newest 0.49.x; every 0.49.x speaks the same protocol). See
+`rollback`). These need vgi 0.50.0 or newer: if `Cargo.lock` has an older 0.50.x, run
+`cargo update -p vgi` (the newest 0.50.x; every 0.50.x speaks the same protocol). See
 [Writable tables, transactions and attach secrets](https://github.com/Query-farm/vgi-rust#writable-tables-transactions-and-attach-secrets).
 
 ## Sharp edges (read before writing code)

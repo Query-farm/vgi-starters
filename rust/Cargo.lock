@@ -2126,9 +2126,9 @@ checksum = "0b928f33d975fc6ad9f86c8f283853ad26bdd5b10b7f1542aa2fa15e2289105a"
 
 [[package]]
 name = "vgi"
-version = "0.49.3"
+version = "0.50.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "719a5e242393c913db6297eed70f05797c3d44a3a415a60a412d34ab2654e88f"
+checksum = "5f16d85f7f343874f2e8794623899979d5818b71b6ca2bfe4707b7265d0980cd"
 dependencies = [
  "arrow",
  "arrow-arith",
@@ -2159,9 +2159,9 @@ dependencies = [
 
 [[package]]
 name = "vgi-protocol"
-version = "0.49.3"
+version = "0.50.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9e3699290dc65d5f6a8d77a5d6db2e67426ee7ee71a91f34cb9b9503f06e0c50"
+checksum = "06c307f991694bdaf873bffc0cce6d8046f2aecb9e5d48506aba77dab5aafcdb"
 dependencies = [
  "arrow-array",
  "arrow-ipc",

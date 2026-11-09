@@ -167,8 +167,8 @@ read DuckDB's `write_options` argument and build the result (`WriteResults.Schem
 `CatalogTable.RowIdColumn` and emitted by a scan with projection pushdown. Transactions:
 return `AttachContext { SupportsTransactions = … }` from `Worker.OnAttach` and pass a
 `TransactionHooks` subclass to `Worker.TransactionHooks`. The `WriteResults` helpers and
-`TransactionHooks` need QueryFarm.Vgi 0.24.2 or newer: if `packages.lock.json` has an older
-0.24.x, run `make lock` (the newest 0.24.x; every 0.24.x speaks the same protocol). See
+`TransactionHooks` need QueryFarm.Vgi 0.25.0 or newer: if `packages.lock.json` has an older
+0.25.x, run `make lock` (the newest 0.25.x; every 0.25.x speaks the same protocol). See
 [Writable tables](https://github.com/Query-farm/vgi-csharp#writable-tables) in the SDK README.
 
 ## Secrets and configuration

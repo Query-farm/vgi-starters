@@ -15,9 +15,9 @@
       },
       "QueryFarm.Vgi": {
         "type": "Direct",
-        "requested": "[0.24.*, )",
-        "resolved": "0.24.0",
-        "contentHash": "piolTjv2Ul4TFKPTzE42sc2FYwhbIVSsN1gheuZeaVgiJX1+aVt2xAZUoo999ggCUIHr0LsHzJkx8kvWGmB8Ww==",
+        "requested": "[0.25.*, )",
+        "resolved": "0.25.0",
+        "contentHash": "v4AwOztF0erEJ3viYP8esqYLeV+Gj6S66koGplWnc3As1oeczZWrkSa0Q49qxWhfAZRNz4gu24w8Cxan8nIw4g==",
         "dependencies": {
           "DuckDB.NET.Data.Full": "1.5.5",
           "QueryFarm.Arrow": "23.0.0-queryfarm.4",

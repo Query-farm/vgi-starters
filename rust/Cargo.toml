@@ -29,7 +29,7 @@ path = "examples/run.rs"
 # SDK bumps go through the template (a minor bump can raise the wire protocol,
 # which must match the DuckDB extension exactly). Default features include the
 # HTTP transport (`--http`) and the SQLite store that backs COPY TO shards.
-vgi = "0.49.3"
+vgi = "0.50.0"
 # Arrow at the version vgi is built against.
 arrow-array = "59.2"
 arrow-schema = "59.2"

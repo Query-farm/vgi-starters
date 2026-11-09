@@ -168,9 +168,9 @@ the requested mode with `vgi.ParseWriteOptions`, and binds and emits
 `vgi.WriteResultSchema` / `vgi.WriteResultBatch`. UPDATE and DELETE need a `vgi.RowIDField`
 column emitted by a scan that declares projection pushdown. Transactions:
 `vgi.WithSupportsTransactions` (or `AttachDecision.SupportsTransactions` per ATTACH) and
-`vgi.WithTransactionHooks`. The write helpers and transaction hooks need vgi-go v0.40.3 or
-newer: if `go.mod` has an older v0.40.x, run `go get github.com/Query-farm/vgi-go@v0.40`
-(the newest v0.40.x; every v0.40.x speaks the same protocol). See [Writable catalog tables](https://github.com/Query-farm/vgi-go#writable-catalog-tables)
+`vgi.WithTransactionHooks`. The write helpers and transaction hooks need vgi-go v0.41.1 or
+newer: if `go.mod` has an older v0.41.x, run `go get github.com/Query-farm/vgi-go@v0.41`
+(the newest v0.41.x; every v0.41.x speaks the same protocol). See [Writable catalog tables](https://github.com/Query-farm/vgi-go#writable-catalog-tables)
 and [`examples/writable_tx`](https://github.com/Query-farm/vgi-go/tree/main/examples/writable_tx).
 
 ## Secrets and configuration
