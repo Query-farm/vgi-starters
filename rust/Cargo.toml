@@ -29,7 +29,7 @@ path = "examples/run.rs"
 # SDK bumps go through the template (a minor bump can raise the wire protocol,
 # which must match the DuckDB extension exactly). Default features include the
 # HTTP transport (`--http`) and the SQLite store that backs COPY TO shards.
-vgi = "0.50.0"
+vgi = "0.51.0"
 # Arrow at the version vgi is built against.
 arrow-array = "59.2"
 arrow-schema = "59.2"
@@ -44,7 +44,7 @@ env_logger = { version = "0.11", default-features = false, features = ["auto-col
 [dev-dependencies]
 # The pushdown_sqlite recipe. Same version and features as vgi's own SQLite
 # store, so it compiles once.
-rusqlite = { version = "0.39", features = ["bundled"] }
+rusqlite = { version = "0.41", features = ["bundled"] }
 # The recipes' Arrow helpers, at vgi's Arrow version.
 arrow-cast = "59.2"
 arrow-select = "59.2"

@@ -42,7 +42,20 @@ const USER_AGENT = `vgi-starter-worker/${VERSION}`;
 export const API_SECRET_TYPE: SecretTypeDescriptor = {
   name: SECRET_TYPE,
   description: "Bearer token for the API that fetch_items reads.",
-  schema: schema([field("token", utf8(), true, new Map([["redact", "true"]]))]),
+  schema: schema(
+    [
+      field(
+        "token",
+        utf8(),
+        true,
+        new Map([
+          ["redact", "true"],
+          ["vgi_doc", "Bearer token sent in the Authorization header."],
+        ]),
+      ),
+    ],
+    new Map([["vgi_doc_url", "https://github.com/Query-farm/vgi-starter-typescript#secrets-and-configuration"]]),
+  ),
 };
 
 export const ITEMS_SCHEMA = schema([

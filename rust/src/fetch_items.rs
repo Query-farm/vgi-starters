@@ -43,14 +43,26 @@ const URL_PATTERN: &str = "^https?://";
 /// Registered with DuckDB so users can run `CREATE SECRET (TYPE starter_api, TOKEN '...')`.
 pub fn secret_type() -> SecretTypeSpec {
     let token = Field::new("token", DataType::Utf8, true).with_metadata(
-        [("redact".to_string(), "true".to_string())]
-            .into_iter()
-            .collect(),
+        [
+            ("redact".to_string(), "true".to_string()),
+            (
+                "vgi_doc".to_string(),
+                "Bearer token sent in the Authorization header.".to_string(),
+            ),
+        ]
+        .into_iter()
+        .collect(),
     );
+    let doc_url = [(
+        "vgi_doc_url".to_string(),
+        "https://github.com/Query-farm/vgi-starter-rust#secrets-and-configuration".to_string(),
+    )];
     SecretTypeSpec {
         name: SECRET_TYPE.into(),
         description: "Bearer token for the API that fetch_items reads.".into(),
-        parameters_schema: Arc::new(Schema::new(vec![token])),
+        parameters_schema: Arc::new(
+            Schema::new(vec![token]).with_metadata(doc_url.into_iter().collect()),
+        ),
     }
 }
 

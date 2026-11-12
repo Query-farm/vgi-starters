@@ -48,8 +48,17 @@ public sealed class FetchItems : ITableFunction
 
     /// <summary>Fields of the <c>starter_api</c> secret type, registered with the worker.</summary>
     public static readonly Schema SecretSchema = new(
-        [new Field("token", StringType.Default, nullable: true, new Dictionary<string, string> { ["redact"] = "true" })],
-        metadata: null);
+        [
+            new Field("token", StringType.Default, nullable: true, new Dictionary<string, string>
+            {
+                ["redact"] = "true",
+                ["vgi_doc"] = "Bearer token sent in the Authorization header.",
+            }),
+        ],
+        metadata: new Dictionary<string, string>
+        {
+            ["vgi_doc_url"] = "https://github.com/Query-farm/vgi-starter-csharp#secrets-and-configuration",
+        });
 
     /// <inheritdoc />
     public string Name => "fetch_items";

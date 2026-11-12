@@ -101,12 +101,12 @@ Mirror `python/src/starter_worker/meta.py` and each function's `Meta`:
 
   | Language | SDK |
   |---|---|
-  | TS | `@query-farm/vgi` 0.49.x |
-  | Go | `github.com/Query-farm/vgi-go` v0.41.x |
-  | Rust | `vgi` 0.50.x |
-  | Java | `farm.query:vgi` 0.47.x |
-  | C# | `QueryFarm.Vgi` 0.25.x |
-  | Python | `vgi-python` 0.50.x |
+  | TS | `@query-farm/vgi` 0.50.x |
+  | Go | `github.com/Query-farm/vgi-go` v0.42.x |
+  | Rust | `vgi` 0.51.x |
+  | Java | `farm.query:vgi` 0.48.x |
+  | C# | `QueryFarm.Vgi` 0.26.x |
+  | Python | `vgi-python` 0.51.x |
 
 ## 3a. Rules learned while building the trees
 

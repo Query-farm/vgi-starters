@@ -166,6 +166,9 @@ produces in `writeResultModes`. `writeOptions`, `writeResultSchema`, `writeResul
 build the result. UPDATE and DELETE need the table's scan `function` to emit `rowIdField()` and
 support projection pushdown. Transactions: return `supports_transactions` from the catalog's
 attach and override `transactionBegin` / `transactionCommit` / `transactionRollback`.
+Since VGI protocol 3.3 a table's scan and write functions are table-only: hidden from
+`duckdb_functions()` and not callable from SQL. Set `exposeScan: true` on the table to keep the
+scan callable as an ordinary table function too (write functions never are).
 [`examples/simple-writable-worker.ts`](https://github.com/Query-farm/vgi-typescript/blob/main/examples/simple-writable-worker.ts)
 and `examples/writable-tx-worker.ts` in vgi-typescript are complete workers.
 

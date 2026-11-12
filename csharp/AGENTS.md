@@ -111,9 +111,12 @@ read DuckDB's `write_options` argument and build the result (`WriteResults.Schem
 `WriteResults.Batch`); UPDATE and DELETE need a `WriteResults.RowIdField()` column, named in
 `CatalogTable.RowIdColumn` and emitted by a scan with projection pushdown. Transactions:
 return `AttachContext { SupportsTransactions = … }` from `Worker.OnAttach` and pass a
-`TransactionHooks` subclass to `Worker.TransactionHooks`. The `WriteResults` helpers and
-`TransactionHooks` need QueryFarm.Vgi 0.25.0 or newer: if `packages.lock.json` has an older
-0.25.x, run `make lock` (the newest 0.25.x; every 0.25.x speaks the same protocol). See
+`TransactionHooks` subclass to `Worker.TransactionHooks`. Since VGI protocol 3.3 a table's scan
+and write functions are table-only: hidden from `duckdb_functions()` and not callable from SQL.
+Set `ExposeScan = true` on the table to keep the scan callable as an ordinary table function too
+(write functions never are). The `WriteResults` helpers and `TransactionHooks` need
+QueryFarm.Vgi 0.26.0 or newer: if `packages.lock.json` has an older 0.26.x, run `make lock` (the
+newest 0.26.x; every 0.26.x speaks the same protocol). See
 [Writable tables](https://github.com/Query-farm/vgi-csharp#writable-tables) in the SDK README.
 
 ## Sharp edges (read before writing code)

@@ -113,10 +113,14 @@ the requested mode with `vgi.ParseWriteOptions`, and binds and emits
 `vgi.WriteResultSchema` / `vgi.WriteResultBatch`. UPDATE and DELETE need a `vgi.RowIDField`
 column emitted by a scan that declares projection pushdown. Transactions:
 `vgi.WithSupportsTransactions` (or `AttachDecision.SupportsTransactions` per ATTACH) and
-`vgi.WithTransactionHooks`. The write helpers and transaction hooks need vgi-go v0.41.1 or
-newer: if `go.mod` has an older v0.41.x, run `go get github.com/Query-farm/vgi-go@v0.41`
-(the newest v0.41.x; every v0.41.x speaks the same protocol). See [Writable catalog tables](https://github.com/Query-farm/vgi-go#writable-catalog-tables)
-and [`examples/writable_tx`](https://github.com/Query-farm/vgi-go/tree/main/examples/writable_tx).
+`vgi.WithTransactionHooks`. Since VGI protocol 3.3 a table's scan and write functions are
+table-only: hidden from `duckdb_functions()` and not callable from SQL. Set `ExposeScan: true`
+on the table to keep the scan callable as an ordinary table function too (write functions never
+are). The write helpers and transaction hooks need vgi-go v0.42.0 or newer: if `go.mod` has an
+older v0.42.x, run `go get github.com/Query-farm/vgi-go@v0.42` (the newest v0.42.x; every
+v0.42.x speaks the same protocol). See
+[Writable catalog tables](https://github.com/Query-farm/vgi-go#writable-catalog-tables) and
+[`examples/writable_tx`](https://github.com/Query-farm/vgi-go/tree/main/examples/writable_tx).
 
 ## Sharp edges (read before writing code)
 

@@ -77,8 +77,19 @@ public final class FetchItems extends SimpleTableFunction {
               List.of(
                   new Field(
                       "token",
-                      new FieldType(true, Schemas.UTF8, null, Map.of("redact", "true")),
-                      null))));
+                      new FieldType(
+                          true,
+                          Schemas.UTF8,
+                          null,
+                          Map.of(
+                              "redact",
+                              "true",
+                              "vgi_doc",
+                              "Bearer token sent in the Authorization header.")),
+                      null)),
+              Map.of(
+                  "vgi_doc_url",
+                  "https://github.com/Query-farm/vgi-starter-java#secrets-and-configuration")));
 
   static final Schema OUTPUT_SCHEMA =
       new Schema(

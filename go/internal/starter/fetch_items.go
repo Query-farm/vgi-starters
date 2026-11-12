@@ -62,9 +62,16 @@ var APISecretType = vgi.SecretTypeSpec{
 	Description: "Bearer token for the API that fetch_items reads.",
 	Schema: arrow.NewSchema([]arrow.Field{
 		{Name: "token", Type: arrow.BinaryTypes.String, Nullable: true,
-			Metadata: arrow.NewMetadata([]string{"redact"}, []string{"true"})},
-	}, nil),
+			Metadata: arrow.NewMetadata(
+				[]string{"redact", "vgi_doc"},
+				[]string{"true", "Bearer token sent in the Authorization header."})},
+	}, &secretSchemaMetadata),
 }
+
+// secretSchemaMetadata links the secret type to how to get a token.
+var secretSchemaMetadata = arrow.NewMetadata(
+	[]string{"vgi_doc_url"},
+	[]string{"https://github.com/Query-farm/vgi-starter-go#secrets-and-configuration"})
 
 var fetchSchema = arrow.NewSchema([]arrow.Field{
 	column("id", arrow.PrimitiveTypes.Int64, "Item identifier assigned by the API.", false),

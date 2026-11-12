@@ -15,8 +15,9 @@ still hold. Whatever you translate must never drop a matching row. The demo
 database is created on first use in the system temp directory.
 
 **Dependency:** vgi-python binds pushed-down predicates with a local engine, so a
-worker that sets ``filter_pushdown = True`` needs ``vgi-python[http,haybarn]`` in its
-dependencies (the template installs it in the dev group for this recipe).
+worker that sets ``filter_pushdown = True`` needs ``vgi-python[http,haybarn]`` and
+``numpy`` in its dependencies (the template installs them in the dev group for this
+recipe).
 """
 
 from __future__ import annotations

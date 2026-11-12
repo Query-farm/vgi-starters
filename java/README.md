@@ -165,9 +165,12 @@ produces with `writeResultMode`. The `farm.query.vgi.write` package reads DuckDB
 (`WriteResults.resultSchema`, `WriteResults.resultBatch`); UPDATE and DELETE need a
 `WriteResults.rowIdField()` column emitted by a scan with projection pushdown. Transactions:
 `Worker.onAttach` decides `supports_transactions` per ATTACH and `Worker.transactionHooks` runs
-your begin / commit / rollback code. These need vgi-java 0.47.0 or newer: if `gradle.lockfile` has
-an older 0.47.x, run `./gradlew dependencies --write-locks` (the newest 0.47.x; every 0.47.x
-speaks the same protocol). See
+your begin / commit / rollback code. Since VGI protocol 3.3 a table's scan and write functions
+are table-only: hidden from `duckdb_functions()` and not callable from SQL. Set
+`.exposeScan(true)` on the table to keep the scan callable as an ordinary table function too
+(write functions never are). These need vgi-java 0.48.0 or newer: if `gradle.lockfile` has an
+older 0.48.x, run `./gradlew dependencies --write-locks` (the newest 0.48.x; every 0.48.x speaks
+the same protocol). See
 [Writable tables, transactions and ATTACH options](https://github.com/Query-farm/vgi-java/blob/main/docs/writable-tables-and-transactions.md).
 
 ## Secrets and configuration
