@@ -53,7 +53,7 @@ pub fn build_worker() -> Worker {
         implementation_version: Some(env!("CARGO_PKG_VERSION").into()),
         schemas: vec![CatSchema {
             name: "main".into(),
-            comment: Some(meta::SCHEMA_DOC_MD.into()),
+            comment: Some(meta::SCHEMA_COMMENT.into()),
             tags: meta::schema_tags(&examples),
             ..Default::default()
         }],

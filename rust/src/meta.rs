@@ -141,14 +141,27 @@ SQL.** It was generated from the Query.Farm starter template and is meant to be 
 rewritten: every function here demonstrates one pattern you will reuse, from vectorized scalars \
 and streaming table functions to a REST API reader that retries politely and reads a bearer \
 token from a DuckDB secret or the environment.\n\n\
-The worker speaks Apache Arrow to DuckDB over stdin/stdout, a Unix socket, or HTTP, so the \
-same code runs as a local subprocess or a hosted service. See the \
+The worker speaks [Apache Arrow](https://arrow.apache.org/) to [DuckDB](https://duckdb.org/) \
+over stdin/stdout, a Unix socket, or HTTP, so the same code runs as a local subprocess or a \
+hosted service. See the \
 [VGI documentation](https://query.farm/vgi/docs/) to learn more.";
 
-/// The catalog comment (`duckdb_databases().comment`).
+/// The catalog comment (`duckdb_databases().comment`): the one-line description
+/// directories show. One plain paragraph, no Markdown, no function list; the long
+/// overview is `CATALOG_DOC_MD`.
 pub fn catalog_comment() -> String {
-    CATALOG_DOC_MD.to_string()
+    CATALOG_COMMENT.to_string()
 }
+
+const CATALOG_COMMENT: &str =
+    "An example VGI worker from the Query.Farm starter template that adds a greeting scalar, a \
+sequence generator and a paginated REST API reader to DuckDB SQL. Rename it and replace them \
+with your own functions.";
+
+/// The main schema's one-line comment.
+pub const SCHEMA_COMMENT: &str =
+    "The starter template's example functions, one per common worker pattern: a scalar, a table \
+function and a REST API reader.";
 
 const SCHEMA_DOC_LLM: &str =
     "The `main` schema holds the starter template's example functions, one per common worker \

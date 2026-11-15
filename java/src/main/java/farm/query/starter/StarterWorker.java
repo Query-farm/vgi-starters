@@ -51,10 +51,10 @@ public final class StarterWorker {
 
     return Worker.builder()
         .catalogName(Meta.CATALOG_NAME)
-        .catalogComment(Meta.CATALOG_DOC_MD)
+        .catalogComment(Meta.CATALOG_COMMENT)
         .catalogTags(Meta.CATALOG_TAGS)
         .sourceUrl(Meta.SOURCE_URL)
-        .schemaComment("main", Meta.SCHEMA_DOC_MD)
+        .schemaComment("main", Meta.SCHEMA_COMMENT)
         .schemaTags("main", schemaTags)
         .secretTypes(FetchItems.API_SECRET_TYPE)
         .registerScalar(new Greet())

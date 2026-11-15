@@ -25,10 +25,11 @@ from vgi.catalog import Catalog, Schema
 from .fetch_items import API_SECRET_TYPE, FetchItems
 from .greet import Greet, GreetWithStyle
 from .meta import (
-    CATALOG_DOC_MD,
+    CATALOG_COMMENT,
     CATALOG_NAME,
     CATALOG_TAGS,
     SCHEMA_CATEGORIES,
+    SCHEMA_COMMENT,
     SCHEMA_DOC_LLM,
     SCHEMA_DOC_MD,
     SOURCE_URL,
@@ -65,13 +66,13 @@ class StarterWorker(Worker):
 
     catalog = Catalog(
         name=CATALOG_NAME,
-        comment=CATALOG_DOC_MD,
+        comment=CATALOG_COMMENT,
         source_url=SOURCE_URL,
         tags=CATALOG_TAGS,
         schemas=[
             Schema(
                 path=["main"],
-                comment=SCHEMA_DOC_MD,
+                comment=SCHEMA_COMMENT,
                 functions=FUNCTIONS,
                 tags={
                     "vgi.title": "Starter Functions",

@@ -131,16 +131,27 @@ const catalogDocLLM = "An example VGI worker generated from the Query.Farm start
 	"environment variable. Replace them with your own functions; keep the metadata complete so " +
 	"agents can discover and call them."
 
-// CatalogDocMD is the catalog's long human-facing description (also its comment).
+// CatalogDocMD is the catalog's long human-facing description (vgi.doc_md).
 const CatalogDocMD = "# VGI starter worker\n\n" +
 	"**An example [VGI](https://query.farm/vgi) worker that brings custom functions into DuckDB " +
 	"SQL.** It was generated from the Query.Farm starter template and is meant to be renamed and " +
 	"rewritten: every function here demonstrates one pattern you will reuse, from vectorized scalars " +
 	"and streaming table functions to a REST API reader that retries politely and reads a bearer " +
 	"token from a DuckDB secret or the environment.\n\n" +
-	"The worker speaks Apache Arrow to DuckDB over stdin/stdout, a Unix socket, or HTTP, so the " +
-	"same code runs as a local subprocess or a hosted service. See the " +
+	"The worker speaks [Apache Arrow](https://arrow.apache.org/) to [DuckDB](https://duckdb.org/) " +
+	"over stdin/stdout, a Unix socket, or HTTP, so the same code runs as a local subprocess or a " +
+	"hosted service. See the " +
 	"[VGI documentation](https://query.farm/vgi/docs/) to learn more."
+
+// CatalogComment is the one-line description directories show: one plain
+// paragraph, no Markdown, no function list. The long overview is CatalogDocMD.
+const CatalogComment = "An example VGI worker from the Query.Farm starter template that adds a " +
+	"greeting scalar, a sequence generator and a paginated REST API reader to DuckDB SQL. Rename it " +
+	"and replace them with your own functions."
+
+// SchemaComment is the main schema's one-line comment.
+const SchemaComment = "The starter template's example functions, one per common worker pattern: " +
+	"a scalar, a table function and a REST API reader."
 
 const schemaDocLLM = "The `main` schema holds the starter template's example functions, one per common worker " +
 	"pattern. `greet(name)` and `greet(name, style)` are vectorized scalars: use them inside a " +
@@ -152,7 +163,7 @@ const schemaDocLLM = "The `main` schema holds the starter template's example fun
 	"requests, and authenticating with a `starter_api` DuckDB secret or the `STARTER_API_TOKEN` " +
 	"environment variable. Scalars cannot take named arguments; table functions can."
 
-// SchemaDocMD is the main schema's human-facing description (also its comment).
+// SchemaDocMD is the main schema's human-facing description (vgi.doc_md).
 const SchemaDocMD = "## main\n\n" +
 	"The starter template's example functions, one per common worker pattern.\n\n" +
 	"- **Scalars** answer one question per row and slot into a projection or predicate.\n" +
