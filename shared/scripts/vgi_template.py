@@ -43,11 +43,13 @@ SKIP_DIRS = {".git", ".venv", ".tools", "node_modules", "target", "build", "dist
 # move QueryFarm.Vgi to the newest patch release.
 LOCKFILES = {"uv.lock", "bun.lock", "bun.lockb", "Cargo.lock", "go.sum"}
 # Phrases that mention the template itself and must survive the rename.
-# The hosted demo API keeps its name in every fork. The workflow guard
+# The hosted demo API keeps its name in every fork, and so does the provenance
+# file `.vgi-starter.json` (`make template-diff` reads it under that name). The workflow guard
 # `startsWith(github.repository, 'Query-farm/vgi-starter-')` skips publishing
 # in the template repos only; renamed, it would skip a fork named
 # vgi-<name>-anything and no longer say what it means.
 PROTECTED = [
+    ".vgi-starter.json",
     "vgi-starter-api.query-farm.services",
     "'Query-farm/vgi-starter-'",
     "starter template",

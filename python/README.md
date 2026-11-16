@@ -276,7 +276,7 @@ Pass secrets with `-e` or your platform's secret manager.
 
 ## Releasing
 
-Push a tag like `v0.1.0`. The release workflow builds the wheel and sdist, attaches them to the GitHub release, and (if you set the repository variable `PYPI_PUBLISH=true` and configure PyPI Trusted Publishing) publishes to PyPI, so users can run `uvx vgi-starter-worker`. Without PyPI, users install straight from the repo with `uvx --from git+https://github.com/Query-farm/vgi-starter-python@v0.1.0 vgi-starter-worker`. Every artifact is signed with cosign and
+Push a tag like `v0.1.0`. The release workflow builds the wheel and sdist and attaches them to the GitHub release. VGI workers are not published to PyPI: users install straight from the repo with `uvx --from git+https://github.com/Query-farm/vgi-starter-python@v0.1.0 vgi-starter-worker`. Every artifact is signed with cosign and
 carries SLSA build provenance. `ci/check-version.sh` makes sure the tag matches the
 version in `pyproject.toml`.
 

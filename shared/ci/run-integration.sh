@@ -19,6 +19,7 @@
 #                     e.g. "require-env STARTER_LIVE". Any other skip fails.
 #   RECIPES_WORKER    command that runs a recipe by name (`$RECIPES_WORKER <recipe>`);
 #                     when set, examples/test/*.test run too (stdio/launch only)
+#   WARMUP_TIMEOUT    seconds allowed for the extension install (default: 300)
 #   KEEP_STAGE=1      keep the staged test tree for debugging
 #
 # Transports:
@@ -119,8 +120,19 @@ INSTALL httpfs FROM core;
 statement ok
 INSTALL json FROM core;
 EOF
-"$HAYBARN_UNITTEST" --keep-home --test-dir "$STAGE" "test/_warm.test" >/dev/null 2>&1 \
-  || echo "::warning::extension warm-up did not fully succeed"
+# Bounded: a stalled extension download would otherwise hang the lane until the
+# job timeout. WARMUP_TIMEOUT is in seconds.
+"$HAYBARN_UNITTEST" --keep-home --test-dir "$STAGE" "test/_warm.test" >/dev/null 2>&1 &
+warm_pid=$!
+warm_deadline=$((SECONDS + ${WARMUP_TIMEOUT:-300}))
+while kill -0 "$warm_pid" 2>/dev/null && [ "$SECONDS" -lt "$warm_deadline" ]; do sleep 1; done
+if kill -0 "$warm_pid" 2>/dev/null; then
+  kill "$warm_pid" 2>/dev/null || true
+  wait "$warm_pid" 2>/dev/null || true
+  echo "::warning::extension warm-up timed out after ${WARMUP_TIMEOUT:-300}s (stalled download?)"
+elif ! wait "$warm_pid"; then
+  echo "::warning::extension warm-up did not fully succeed"
+fi
 rm -f "$STAGE/test/_warm.test"
 
 cat > "$STAGE/no_error_skip.json" <<'EOF'

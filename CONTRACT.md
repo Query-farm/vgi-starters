@@ -128,6 +128,6 @@ Mirror `python/src/starter_worker/meta.py` and each function's `Meta`:
    - vgi-lint 100 / no findings
 2. `python3 tools/render.py --check` reports no drift.
 3. Copy the tree to a temp dir, `git init && git add -A && git commit`, run `make init NAME=acme_demo`, and then:
-   - `git grep -n -I -i -w starter -- . ':!scripts/vgi_template.py' ':!.vgi-starter.json' | grep -vi 'starter template'` prints nothing
+   - `git grep -n -I -i -w starter -- . ':!scripts/vgi_template.py' ':!.vgi-starter.json' | grep -vi 'starter template' | grep -v vgi-starter-api.query-farm.services | grep -v "'Query-farm/vgi-starter-'" | grep -vF .vgi-starter.json` prints nothing
    - `make check` passes
 4. `actionlint <lang>/.github/workflows/*.yml` is clean.
