@@ -18,7 +18,7 @@ jobs:
       - uses: oven-sh/setup-bun@v2
       - uses: astral-sh/setup-uv@v6
         with:
-          python-version: "3.13"
+          python-version: "3.14"
       - name: Initialize a copy as "acme_demo"
         run: |
           cp -R . /tmp/acme && cd /tmp/acme

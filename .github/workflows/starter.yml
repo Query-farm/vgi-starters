@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
-        with: { python-version: "3.13" }
+        with: { python-version: "3.14" }
       - uses: ./.github/actions/toolchain
         with: { lang: "${{ inputs.lang }}" }
       - run: make -C ${{ inputs.lang }} check
@@ -33,7 +33,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
-        with: { python-version: "3.13" }
+        with: { python-version: "3.14" }
       - uses: ./.github/actions/toolchain
         with: { lang: "${{ inputs.lang }}" }
       - name: Rename a copy outside git (no git ls-files to list the files)

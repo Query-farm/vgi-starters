@@ -63,7 +63,7 @@ jobs:
           go-version-file: go.mod
       - uses: astral-sh/setup-uv@v6
         with:
-          python-version: "3.13"
+          python-version: "3.14"
       - name: Build the worker and the recipes
         run: |
           exe=""; [ "$RUNNER_OS" = "Windows" ] && exe=.exe

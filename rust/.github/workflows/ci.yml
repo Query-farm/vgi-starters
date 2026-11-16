@@ -59,7 +59,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2
       - uses: astral-sh/setup-uv@v6
         with:
-          python-version: "3.13"
+          python-version: "3.14"
       - name: Build the worker and the recipes
         run: cargo build --locked --release --bin vgi-starter-worker --example recipes
       - name: Install the SQL test runner
@@ -84,7 +84,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2
       - uses: astral-sh/setup-uv@v6
         with:
-          python-version: "3.13"
+          python-version: "3.14"
       - run: cargo build --locked --release --bin vgi-starter-worker
       - name: Read fail_on from vgi-lint.toml
         id: lintcfg

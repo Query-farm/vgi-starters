@@ -65,7 +65,7 @@ jobs:
           cache: gradle
       - uses: astral-sh/setup-uv@v6
         with:
-          python-version: "3.13"
+          python-version: "3.14"
       - name: Build the worker and recipes jars
         run: ./gradlew --console=plain shadowJar recipesJar
       - name: Install the SQL test runner

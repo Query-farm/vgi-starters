@@ -47,7 +47,7 @@ changes there.
 
 ## Quick start
 
-**Prerequisites:** Python 3.13+ and [uv](https://docs.astral.sh/uv/) (it runs the SQL
+**Prerequisites:** Python 3.14+ and [uv](https://docs.astral.sh/uv/) (it runs the SQL
 test runner and the metadata checker).
 
 ```bash

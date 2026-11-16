@@ -60,7 +60,7 @@ jobs:
           global-json-file: global.json
       - uses: astral-sh/setup-uv@v6
         with:
-          python-version: "3.13"
+          python-version: "3.14"
       - name: Build the worker and the recipes
         run: |
           dotnet restore Starter.slnx --locked-mode
@@ -88,7 +88,7 @@ jobs:
           global-json-file: global.json
       - uses: astral-sh/setup-uv@v6
         with:
-          python-version: "3.13"
+          python-version: "3.14"
       - name: Build the worker
         run: |
           dotnet restore src/Starter.Worker --locked-mode
