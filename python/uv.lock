@@ -1,5 +1,5 @@
 version = 1
-revision = 5
+revision = 3
 requires-python = ">=3.14"
 resolution-markers = [
     "python_full_version >= '3.15'",
@@ -200,17 +200,14 @@ wheels = [
 
 [[package]]
 name = "haybarn"
-version = "1.5.5rc1"
+version = "2.0.0rc11"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/9f/ee/4bb4044464a6c4021bad6680c0509103181c3828ccacef423c547a7502fe/haybarn-1.5.5rc1.tar.gz", hash = "sha256:f24e1e2de4ef1485e6dc41d0fed2f83460b075ebf0e0d2c1fd02737a14f02814", size = 18079519, upload-time = "2026-07-29T17:32:32.999Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/4e/9a/f6260f401af46669d82ddfb55a4a41737c9a21f69cbbf76909a5b796eae2/haybarn-2.0.0rc11.tar.gz", hash = "sha256:d7b4bfce3f377c7ca0f163e2ce696a21c4d2ddc07c03a6de9f740dabba1b7edc", size = 16785928, upload-time = "2026-11-04T14:51:23.894Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/60/e4/5c5c2d842eae1976b1a8d14ec7d3f3af9984e47e874e45855f5e275e140c/haybarn-1.5.5rc1-cp314-cp314-macosx_11_0_arm64.whl", hash = "sha256:e785b001ad430f8221fcf783ab502a10fcdf29b4aa16a47598c619850a1d44ae", size = 15458625, upload-time = "2026-07-29T17:32:12.45Z" },
-    { url = "https://files.pythonhosted.org/packages/07/ee/04c5a83f61d6d1447cc3a5c4f9a1f367e505000942abe233fccf88fd89dc/haybarn-1.5.5rc1-cp314-cp314-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:9f446684bcfb21213a757d05da2c9a4a7f8a8e7d9a66acde49e97192c5615536", size = 19315848, upload-time = "2026-07-29T17:32:15.356Z" },
-    { url = "https://files.pythonhosted.org/packages/92/db/09e905c06791b3988f746a31a412f3c013f11601bbc7115f86d4c492a275/haybarn-1.5.5rc1-cp314-cp314-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:f1c1243bc1ddf3d3051ccc926ce5ed1acf2cec6a34cc5db989006484c341f643", size = 21443482, upload-time = "2026-07-29T17:32:18.358Z" },
-    { url = "https://files.pythonhosted.org/packages/88/50/db9b0fab9f624cdf46cbd82f48b11040fa5a37c5cef4fb735c482fd77480/haybarn-1.5.5rc1-cp314-cp314-musllinux_1_2_aarch64.whl", hash = "sha256:9b379fc138e5db21fb0eaee19c9fe900580223e4204a3ee2bd34eeaac4cdbbbb", size = 21444432, upload-time = "2026-07-29T17:32:21.348Z" },
-    { url = "https://files.pythonhosted.org/packages/50/5e/f1a03e7f11c97baff00fc5e91ac2265cfd41ae4cb8dd37a68fcbee21cb62/haybarn-1.5.5rc1-cp314-cp314-musllinux_1_2_x86_64.whl", hash = "sha256:28562ab9956cfc9e7def888569476e3898c6b6c613d7e2298747196849596535", size = 23280819, upload-time = "2026-07-29T17:32:24.352Z" },
-    { url = "https://files.pythonhosted.org/packages/03/a5/063ab73fdf2e9db524e1b0053fcf4535f030e3075cade6c8d54182ac9d7c/haybarn-1.5.5rc1-cp314-cp314-win_amd64.whl", hash = "sha256:cf83f7b99c991b9221081b6677d38ecaf2552d2481770940e072c1cfd4978df7", size = 13675856, upload-time = "2026-07-29T17:32:27.286Z" },
-    { url = "https://files.pythonhosted.org/packages/d9/ac/41d8e3ca519ea42aa3c1be906dd33d51d50f84ba762bf5eb04b367c54336/haybarn-1.5.5rc1-cp314-cp314-win_arm64.whl", hash = "sha256:61abb523426ec26ce932c61ea7ba6c9f3d4895969145f841dd6a07675ca85d1e", size = 14434853, upload-time = "2026-07-29T17:32:30.138Z" },
+    { url = "https://files.pythonhosted.org/packages/c2/2d/86932c3abea4b1368f2a648df12c39034ba50d9a1a35c54e500cb738ca7f/haybarn-2.0.0rc11-cp312-abi3-macosx_11_0_arm64.whl", hash = "sha256:077a848bb538b52f9b36d35fb9fe8abeaf70d2ef606ebb454d91e0b908619256", size = 17596026, upload-time = "2026-11-04T14:51:10.463Z" },
+    { url = "https://files.pythonhosted.org/packages/7b/02/98a10e8c0edd39e7a2f78db66024c0c8a35df159668567c68980de314b5a/haybarn-2.0.0rc11-cp312-abi3-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:731ba971756ccee6288c50c1900a14bffd3369296800d063e7974098b84e3642", size = 21660417, upload-time = "2026-11-04T14:51:13.736Z" },
+    { url = "https://files.pythonhosted.org/packages/2a/d0/44eba5f288187aba0c712bd10b2ca5f97f6e4d7cac1d73b871425a702a1c/haybarn-2.0.0rc11-cp312-abi3-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:cf02e73b19f4f3e05c63378f5431c8e49bc4c536ba82b61eaab7e7a0bc6e59bb", size = 24371997, upload-time = "2026-11-04T14:51:17.274Z" },
+    { url = "https://files.pythonhosted.org/packages/da/5b/a76ee8b476c825b774ebde49e81e7be0709f81c4f5f01046a8cfeeb0143e/haybarn-2.0.0rc11-cp312-abi3-win_amd64.whl", hash = "sha256:ee03fe19931e9bb0c9dd77977593d483c35bfe27489c0bc3a97cb9cbfb284283", size = 15376669, upload-time = "2026-11-04T14:51:20.558Z" },
 ]
 
 [[package]]
@@ -791,7 +788,7 @@ wheels = [
 
 [[package]]
 name = "vgi-python"
-version = "0.51.1"
+version = "0.54.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
@@ -802,9 +799,9 @@ dependencies = [
     { name = "typer" },
     { name = "vgi-rpc" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/08/f6/2c758ba0ae2b0799ce88c106a1d5923c7ff012c75fe284adcc423e862f34/vgi_python-0.51.1.tar.gz", hash = "sha256:506aa201575284b38584a882373d4e839a2043f4da117314912826e845b5a54e", size = 5599371, upload-time = "2026-11-12T18:16:21.36Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c7/c5/0f7b68cb73f834ee0aed048a87d700813e2ebf8c8a94691b71c98f57524e/vgi_python-0.54.1.tar.gz", hash = "sha256:6a3d8c02381f9f952e538b4c4958df19ff1e178ca6053cc6ef19eb5ee07e2541", size = 5678756, upload-time = "2026-11-19T17:46:43.687Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/0c/da/3e9cfcdefe72e41f8d54f10cfe0c6929fd3252a7e137c548513381dda892/vgi_python-0.51.1-py3-none-any.whl", hash = "sha256:3d8144e1d12d0e6b3962cd44f22a7b4e7764e9d1248357095f7bb9bc5a7c7409", size = 1455405, upload-time = "2026-11-12T18:16:19.552Z" },
+    { url = "https://files.pythonhosted.org/packages/a6/ce/dc1299b527959408e0bd473bc44cfbebcf4fd84eb807265d0dcb24f942be/vgi_python-0.54.1-py3-none-any.whl", hash = "sha256:487c0b54d1eb56dee3ec1b270c7dadb271dcb7d18cb9da438e1642631485743d", size = 1501826, upload-time = "2026-11-19T17:46:41.168Z" },
 ]
 
 [package.optional-dependencies]
@@ -818,7 +815,7 @@ http = [
 
 [[package]]
 name = "vgi-rpc"
-version = "0.53.1"
+version = "0.56.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "docstring-parser" },
@@ -826,9 +823,9 @@ dependencies = [
     { name = "pywin32", marker = "sys_platform == 'win32'" },
     { name = "tzdata", marker = "sys_platform == 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/01/87/8d17789a0fc23f5e735abf5e6eb18cbbefb3d3dd6d05f76def9472c6e324/vgi_rpc-0.53.1.tar.gz", hash = "sha256:d149c485285f54ed58dfaa3c941c6b9444bee1dc2090d388a3756518f5af10fb", size = 1647405, upload-time = "2026-11-05T16:18:03.668Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/84/07/34072f2b25e2d1328d71717895fae3d3f953b79ec58428cd8c7571322d38/vgi_rpc-0.56.0.tar.gz", hash = "sha256:6e552c5918ebbddcfea0f01614225dd8e584108aee669f52f1844a6c69aa59d2", size = 1698222, upload-time = "2026-11-19T04:46:52.686Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/3e/3e/7ae93da324ac563294e126425a8c9ba1149a65ccab799ab7f5cba0481c3f/vgi_rpc-0.53.1-py3-none-any.whl", hash = "sha256:84d4135835bedf8038ee9d766982bcbd84715dadba4d7f01f3e6bc9c276e3520", size = 765119, upload-time = "2026-11-05T16:18:01.389Z" },
+    { url = "https://files.pythonhosted.org/packages/58/4d/9517e1135866290410e34b4ec941b33983280e5a981cadcf43cfc23c12ec/vgi_rpc-0.56.0-py3-none-any.whl", hash = "sha256:7b6fd0e4aac16b024e23dd50556854e89098e3e593c857b14d94686a421b5d09", size = 796853, upload-time = "2026-11-19T04:46:50.622Z" },
 ]
 
 [package.optional-dependencies]
@@ -860,7 +857,7 @@ dev = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "vgi-python", extras = ["http"], specifier = ">=0.51.1,<0.52" }]
+requires-dist = [{ name = "vgi-python", extras = ["http"], specifier = ">=0.54.1,<0.55" }]
 
 [package.metadata.requires-dev]
 dev = [
@@ -868,7 +865,7 @@ dev = [
     { name = "pyarrow-stubs", specifier = ">=20.0" },
     { name = "pytest", specifier = ">=8.4" },
     { name = "ruff", specifier = ">=0.14" },
-    { name = "vgi-python", extras = ["haybarn"], specifier = ">=0.51.1,<0.52" },
+    { name = "vgi-python", extras = ["haybarn"], specifier = ">=0.54.1,<0.55" },
 ]
 
 [[package]]
