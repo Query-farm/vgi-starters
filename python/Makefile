@@ -39,7 +39,7 @@ lint: build ## Static checks: ruff, mypy, pydoclint
 	uv run ruff format --check src tests test examples examples
 	uv run ruff check src tests test examples examples
 	uv run mypy
-	uvx pydoclint --config=pyproject.toml src
+	uvx --python 3.14 pydoclint --config=pyproject.toml src
 
 test-unit: build ## Unit tests (pytest)
 	uv run pytest -q
