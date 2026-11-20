@@ -81,12 +81,16 @@ MOCK_API_TOKEN=test-token start_server "$STAGE/mock-auth.log" $PYTHON "$REPO/tes
 export STARTER_MOCK_API_AUTH="http://127.0.0.1:$PORT"
 
 HTTP=0
+WORKER_PID=""
 case "$TRANSPORT" in
   stdio)  export STARTER_WORKER="$WORKER" ;;
   launch) export STARTER_WORKER="launch:$WORKER" ;;
   http)
     HTTP=1
     start_server "$STAGE/worker.log" "$WORKER" --http --port 0
+    # Remember the worker's own pid: workers add or drop mock servers above,
+    # so its position in PIDS is not fixed.
+    WORKER_PID="${PIDS[${#PIDS[@]}-1]}"
     export STARTER_WORKER="http://127.0.0.1:$PORT"
     ;;
   *) echo "::error::unknown TRANSPORT=$TRANSPORT (expected stdio|launch|http)"; exit 1 ;;
@@ -166,7 +170,7 @@ echo "executed $executed of $total test files over $TRANSPORT ($skipped skipped)
 if [ "$executed" -lt "$MIN_EXECUTED" ]; then
   echo "::error::only $executed test files ran (MIN_EXECUTED=$MIN_EXECUTED)"; rc=1
 fi
-if [ "$HTTP" = "1" ] && ! kill -0 "${PIDS[2]}" 2>/dev/null; then
+if [ "$HTTP" = "1" ] && ! kill -0 "$WORKER_PID" 2>/dev/null; then
   echo "::error::the HTTP worker died during the run:"; cat "$STAGE/worker.log"; rc=1
 fi
 exit "$rc"
