@@ -66,7 +66,7 @@ jobs:
             echo "::error::make init changed the pinned SDK version"; exit 1
           fi
           git add -A && git commit -qm init
-          if git grep -n -I -i -w starter -- . ':!scripts/vgi_template.py' ':!.vgi-starter.json' | grep -vi 'starter template' | grep -v 'vgi-starter-api.query-farm.services' | grep -v "'Query-farm/vgi-starter-'"; then
+          if git grep -n -I -i -w starter -- . ':!scripts/vgi_template.py' ':!.vgi-starter.json' | grep -vi 'starter template' | grep -v 'vgi-starter-api.query-farm.services' | grep -v "'Query-farm/vgi-starter-'" | grep -vF '.vgi-starter.json'; then
             echo "::error::identifiers above were not renamed"; exit 1
           fi
           # The template-repo guard must survive init unchanged, or forks
