@@ -32,6 +32,6 @@ emitted by a scan with projection pushdown. Transactions: set `CatalogModel::tra
 `rollback`). Since VGI protocol 3.3 a table's scan and write functions are table-only: hidden
 from `duckdb_functions()` and not callable from SQL. Set `expose_scan: true` on the table to
 keep the scan callable as an ordinary table function too (write functions never are). These need
-vgi 0.51.0 or newer: if `Cargo.lock` has an older 0.51.x, run `cargo update -p vgi` (the newest
-0.51.x; every 0.51.x speaks the same protocol). See
+vgi 0.53.0 or newer: if `Cargo.lock` has an older 0.53.x, run `cargo update -p vgi` (the newest
+0.53.x; every 0.53.x speaks the same protocol). See
 [Writable tables, transactions and attach secrets](https://github.com/Query-farm/vgi-rust#writable-tables-transactions-and-attach-secrets)."""

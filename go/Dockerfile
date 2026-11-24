@@ -1,5 +1,7 @@
 # syntax=docker/dockerfile:1
 # One image, both transports:
+#   (Orchard hosted mode, VGI_ORCHARD_HOSTED=1, runs the HTTP default and refuses stdio.
+#   The health check uses HEAD /health: hosted mode leaves only that open without a Pass.)
 #   docker run -p 8000:8000 IMAGE         -> HTTP on $PORT (default 8000; GET /health)
 #   docker run -i IMAGE stdio             -> stdio worker, for DuckDB on the same host
 
@@ -41,5 +43,5 @@ USER worker
 
 EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s \
-    CMD curl -fsS "http://127.0.0.1:${PORT:-8000}/health" || exit 1
+    CMD curl -fsS --head "http://127.0.0.1:${PORT:-8000}/health" || exit 1
 ENTRYPOINT ["docker-entrypoint.sh"]

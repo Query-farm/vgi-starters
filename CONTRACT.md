@@ -59,7 +59,7 @@ Mirror `python/src/starter_worker/meta.py` and each function's `Meta`:
   - `lint-explain` `lint-ai` `check` `run` `run-http` `debug`
   - `template-diff` `clean`
 
-  `HAYBARN_VERSION ?= 2.0.0rc11`. vgi-lint is **not** pinned (`vgi-lint-check>=2,<3`, per vgi-lint-check's policy); its settings live in the rendered `vgi-lint.toml`. Tools install into `.tools/` (never global).
+  `HAYBARN_VERSION ?= 2.0.1rc3`. vgi-lint is **not** pinned (`vgi-lint-check>=2,<3`, per vgi-lint-check's policy); its settings live in the rendered `vgi-lint.toml`. Tools install into `.tools/` (never global).
 - **`test-sql`:** calls `ci/run-integration.sh` with:
   - `WORKER` = absolute path of a single executable. Use a small wrapper script in `bin/` if the runtime needs one, e.g. `bun run …`, `java -jar …`.
   - `RECIPES_WORKER` = a command that runs a recipe by name.
@@ -101,12 +101,12 @@ Mirror `python/src/starter_worker/meta.py` and each function's `Meta`:
 
   | Language | SDK |
   |---|---|
-  | TS | `@query-farm/vgi` 0.50.x |
-  | Go | `github.com/Query-farm/vgi-go` v0.42.x |
-  | Rust | `vgi` 0.51.x |
-  | Java | `farm.query:vgi` 0.48.x |
-  | C# | `QueryFarm.Vgi` 0.26.x |
-  | Python | `vgi-python` 0.51.x |
+  | TS | `@query-farm/vgi` 0.52.x |
+  | Go | `github.com/Query-farm/vgi-go` v0.44.x |
+  | Rust | `vgi` 0.53.x |
+  | Java | `farm.query:vgi` 0.50.x |
+  | C# | `QueryFarm.Vgi` 0.27.x |
+  | Python | `vgi-python` 0.55.x |
 
 ## 3a. Rules learned while building the trees
 

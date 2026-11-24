@@ -68,7 +68,8 @@ LOAD vgi FROM query_farm;
 ATTACH 'starter' (TYPE vgi, LOCATION '/abs/path/to/vgi-starter-rust/target/release/vgi-starter-worker');
 ```
 
-**Haybarn 2.0** (`uvx haybarn-cli`):
+**Haybarn 2.0.1 or newer** (`uvx haybarn-cli`; Haybarn 2.0.0 loads an older `vgi` extension that
+can't attach this worker):
 
 ```sql
 INSTALL vgi FROM community;
@@ -170,8 +171,8 @@ emitted by a scan with projection pushdown. Transactions: set `CatalogModel::tra
 `rollback`). Since VGI protocol 3.3 a table's scan and write functions are table-only: hidden
 from `duckdb_functions()` and not callable from SQL. Set `expose_scan: true` on the table to
 keep the scan callable as an ordinary table function too (write functions never are). These need
-vgi 0.51.0 or newer: if `Cargo.lock` has an older 0.51.x, run `cargo update -p vgi` (the newest
-0.51.x; every 0.51.x speaks the same protocol). See
+vgi 0.53.0 or newer: if `Cargo.lock` has an older 0.53.x, run `cargo update -p vgi` (the newest
+0.53.x; every 0.53.x speaks the same protocol). See
 [Writable tables, transactions and attach secrets](https://github.com/Query-farm/vgi-rust#writable-tables-transactions-and-attach-secrets).
 
 ## Secrets and configuration
@@ -269,12 +270,20 @@ The same binary serves stdio (DuckDB starts it locally) or HTTP (you host it):
 
 ```bash
 docker build -t weather-worker .
-docker run -p 8000:8000 -e STARTER_API_TOKEN=... weather-worker   # health: GET /health
+docker run -p 8000:8000 -e STARTER_API_TOKEN=... weather-worker   # health: HEAD /health
 ```
 
 ```sql
 ATTACH 'starter' (TYPE vgi, LOCATION 'https://workers.example.com/starter');
 ```
+
+`docker run -i weather-worker stdio` serves stdio instead, for DuckDB on the same host.
+
+The image also runs in Query.Farm Orchard's hosted mode. Orchard starts it with
+`VGI_ORCHARD_HOSTED=1` (plus `VGI_JWT_ISSUER`, `VGI_JWT_AUDIENCE`, `VGI_JWT_JWKS_URI` and
+`VGI_SIGNING_KEY`); the worker then verifies an Orchard Pass on every request and refuses
+stdio. The default command (HTTP on `$PORT`) is what hosted mode runs, and the health check
+uses `HEAD /health`, the one request that needs no Pass.
 
 Put hosted workers behind TLS and authentication. See
 [authentication](https://query.farm/vgi/authentication) for bearer tokens and JWTs, and

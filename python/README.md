@@ -68,7 +68,8 @@ LOAD vgi FROM query_farm;
 ATTACH 'starter' (TYPE vgi, LOCATION '/abs/path/to/vgi-starter-python/.venv/bin/vgi-starter-worker');
 ```
 
-**Haybarn 2.0** (`uvx haybarn-cli`):
+**Haybarn 2.0.1 or newer** (`uvx haybarn-cli`; Haybarn 2.0.0 loads an older `vgi` extension that
+can't attach this worker):
 
 ```sql
 INSTALL vgi FROM community;
@@ -262,12 +263,20 @@ The same binary serves stdio (DuckDB starts it locally) or HTTP (you host it):
 
 ```bash
 docker build -t weather-worker .
-docker run -p 8000:8000 -e STARTER_API_TOKEN=... weather-worker   # health: GET /health
+docker run -p 8000:8000 -e STARTER_API_TOKEN=... weather-worker   # health: HEAD /health
 ```
 
 ```sql
 ATTACH 'starter' (TYPE vgi, LOCATION 'https://workers.example.com/starter');
 ```
+
+`docker run -i weather-worker stdio` serves stdio instead, for DuckDB on the same host.
+
+The image also runs in Query.Farm Orchard's hosted mode. Orchard starts it with
+`VGI_ORCHARD_HOSTED=1` (plus `VGI_JWT_ISSUER`, `VGI_JWT_AUDIENCE`, `VGI_JWT_JWKS_URI` and
+`VGI_SIGNING_KEY`); the worker then verifies an Orchard Pass on every request and refuses
+stdio. The default command (HTTP on `$PORT`) is what hosted mode runs, and the health check
+uses `HEAD /health`, the one request that needs no Pass.
 
 Put hosted workers behind TLS and authentication. See
 [authentication](https://query.farm/vgi/authentication) for bearer tokens and JWTs, and

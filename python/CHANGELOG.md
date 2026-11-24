@@ -4,4 +4,4 @@
 
 Initial worker generated from the VGI starter template.
 
-Targets: vgi-python 0.51 · VGI protocol 3.3 · Haybarn 2.0.0rc11 · vgi-lint-check 2.x (unpinned)
+Targets: vgi-python 0.55 · VGI protocol 3.4 · Haybarn 2.0.1rc3 · vgi-lint-check 2.x (unpinned)

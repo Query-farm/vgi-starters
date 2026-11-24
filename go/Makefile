@@ -2,7 +2,7 @@
 # and uv (https://docs.astral.sh/uv/), which runs the SQL test runner and vgi-lint.
 # managed-by: vgi-starters (language section below is go-specific)
 
-HAYBARN_VERSION ?= 2.0.0rc11
+HAYBARN_VERSION ?= 2.0.1rc3
 # vgi-lint is deliberately not pinned: the gate tracks the current quality bar.
 VGI_LINT        := uvx --prerelease=allow --from 'vgi-lint-check>=2,<3' vgi-lint lint
 LINT_ARGS       ?=

@@ -32,6 +32,6 @@ return `AttachContext { SupportsTransactions = … }` from `Worker.OnAttach` and
 and write functions are table-only: hidden from `duckdb_functions()` and not callable from SQL.
 Set `ExposeScan = true` on the table to keep the scan callable as an ordinary table function too
 (write functions never are). The `WriteResults` helpers and `TransactionHooks` need
-QueryFarm.Vgi 0.26.0 or newer: if `packages.lock.json` has an older 0.26.x, run `make lock` (the
-newest 0.26.x; every 0.26.x speaks the same protocol). See
+QueryFarm.Vgi 0.27.0 or newer: if `packages.lock.json` has an older 0.27.x, run `make lock` (the
+newest 0.27.x; every 0.27.x speaks the same protocol). See
 [Writable tables](https://github.com/Query-farm/vgi-csharp#writable-tables) in the SDK README."""

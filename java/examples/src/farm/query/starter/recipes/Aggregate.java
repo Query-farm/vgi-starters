@@ -2,9 +2,9 @@ package farm.query.starter.recipes;
 
 import farm.query.vgi.Worker;
 import farm.query.vgi.aggregate.AggregateFunction;
+import farm.query.vgi.aggregate.StateCodec;
 import farm.query.vgi.function.FunctionSpec;
 import farm.query.vgi.types.Schemas;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import org.apache.arrow.vector.BigIntVector;
@@ -27,13 +27,14 @@ import org.apache.arrow.vector.types.pojo.Schema;
  *   <li>{@code finalize} turns each group's state into one output value
  * </ul>
  *
- * <p>State is {@link Serializable} because partial states can be combined in a different process.
+ * <p>Partial states can be combined in a different process, so the aggregate encodes its state
+ * explicitly with {@link StateCodec} ({@code serializeState} / {@code deserializeState}). The SDK
+ * has no Java-serialization default: an aggregate without these two methods fails to register.
  */
 public final class Aggregate implements AggregateFunction<Aggregate.SumState> {
 
   /** Running total for one group. */
-  public static final class SumState implements Serializable {
-    private static final long serialVersionUID = 1L;
+  public static final class SumState {
     long total;
   }
 
@@ -54,6 +55,22 @@ public final class Aggregate implements AggregateFunction<Aggregate.SumState> {
   @Override
   public Schema outputSchema() {
     return OUTPUT;
+  }
+
+  @Override
+  public byte[] serializeState(SumState state) {
+    return StateCodec.encode(out -> out.writeLong(state.total));
+  }
+
+  @Override
+  public SumState deserializeState(byte[] bytes) {
+    return StateCodec.decode(
+        bytes,
+        in -> {
+          SumState s = new SumState();
+          s.total = in.readLong();
+          return s;
+        });
   }
 
   @Override

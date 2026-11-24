@@ -7,9 +7,10 @@ license = "0BSD"
 license-files = ["LICENSE"]
 requires-python = ">=3.14"
 dependencies = [
-    # [http] adds the HTTP transport (`--http`) used by Docker deploys.
+    # [http] adds the HTTP transport (`--http`) used by Docker deploys; [oauth] adds the
+    # JWT verification that Orchard hosted mode (VGI_ORCHARD_HOSTED=1) needs.
     # SDK bumps go through the template (minor bumps can raise the protocol).
-    "vgi-python[http]>=0.54.1,<0.55",
+    "vgi-python[http,oauth]>=0.55.0,<0.56",
 ]
 
 [project.scripts]
@@ -19,7 +20,7 @@ vgi-starter-worker = "starter_worker.worker:main"
 dev = [
     # The pushdown recipe evaluates predicates locally; a worker that uses filter
     # pushdown must add the `haybarn` extra to its own dependencies.
-    "vgi-python[haybarn]>=0.54.1,<0.55",
+    "vgi-python[haybarn]>=0.55.0,<0.56",
     "pytest>=8.4",
     "mypy>=1.18",
     "ruff>=0.14",

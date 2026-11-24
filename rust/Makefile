@@ -1,7 +1,7 @@
 # Common tasks. `make help` lists them. Requires Rust (rustup) and uv (https://docs.astral.sh/uv/).
 # managed-by: vgi-starters (language section below is rust-specific)
 
-HAYBARN_VERSION ?= 2.0.0rc11
+HAYBARN_VERSION ?= 2.0.1rc3
 # vgi-lint is deliberately not pinned: the gate tracks the current quality bar.
 VGI_LINT        := uvx --prerelease=allow --from 'vgi-lint-check>=2,<3' vgi-lint lint
 LINT_ARGS       ?=
